@@ -1,14 +1,25 @@
 <template>
-  <div class="about">
+  <div class="edit-details">
     <nav>
-        <router-link to="/"><img src="@/assets/back.png" class="back"></router-link>
+        <router-link to="/details"><img src="@/assets/back.png" class="back"></router-link>
         <img class="logo" alt="Like a Glove logo" src="@/assets/likeaglovelogo.png">
         <router-link to="/"><img src="@/assets/logout.png" class="logout"></router-link>
     </nav>
     <div class="top">
         <!-- // <img :src="image" class="favItemPic"> -->
         <h2>{{ item }}</h2>
+        
     </div>
+    <a @click="openModal" class="changePhotoOverlay editDetailsOverlay">
+        <img src="@/assets/camera.png" class="overlayIcon">
+        <h4>Change Photo</h4>
+    </a>
+    <!-- <pictureModal></pictureModal> -->
+    <div class="modalWidth" v-click-outside="closePopup">
+      <!-- <button @click="openModal">Open Modal</button> -->
+      <pictureModal v-model="modalOpen"></pictureModal>
+    </div>
+
     <div class="measurements">
         <div class="left">
             <h1>Measurements</h1>
@@ -23,6 +34,13 @@
           <favItemMeasurements></favItemMeasurements>
         </div>
     </div>
+    <a @click="openMeasureModal" class="changeMeasurementsOverlay editDetailsOverlay">
+        <img src="@/assets/ruler.png" class="overlayIcon">
+        <h4>Re-measure</h4>
+    </a>
+    <div class="modalWidth" v-click-outside="closeMeasurePopup">
+      <measureModal v-model="measureModalOpen"></measureModal>
+    </div>
     <div class="itemInfoWrapper">
       <div class="itemInfo">
           <h1>Item Info</h1>
@@ -33,18 +51,31 @@
               </ul>
       </div>
     </div>
-    <router-link to="/edit-details"><button>Edit Item</button></router-link>
+    <a @click="openInfoModal" class="changeInfoOverlay editDetailsOverlay">
+        <img src="@/assets/pencil.png" class="overlayIcon">
+        <h4>Edit Info</h4>
+    </a>
+    <div class="modalWidth" v-click-outside="closeInfoPopup">
+      <infoModal v-model="infoModalOpen"></infoModal>
+    </div>
+    <!-- <router-link to="/edit-details"><button>Edit Item</button></router-link> -->
     <router-link to="/details">Delete Item</router-link>
-    <router-link to="/" class="bottomButtonWrapper"><button class="bottomButton">Done</button></router-link>
+    <router-link to="/details" class="bottomButtonWrapper"><button class="bottomButton">Save Item</button></router-link>
   </div>
 </template>
 
 <script>
-  import favItemMeasurements from '@/components/favItemMeasurements.vue'
+import favItemMeasurements from '@/components/favItemMeasurements.vue'
+import pictureModal from '@/components/pictureModal.vue'
+import measureModal from '@/components/measureModal.vue'
+import infoModal from '@/components/infoModal.vue'
 export default{
     name:'About',
-    components:{
-      favItemMeasurements
+    components: {
+      pictureModal,
+      favItemMeasurements,
+      measureModal,
+      infoModal
     },
     data(){
         return{
@@ -65,15 +96,41 @@ export default{
                 Fabric: 'Cotton',
                 Fit: "Form-Fitting"
             },
-            inches:true
+            inches:true,
+            modalOpen: false,
+            measureModalOpen: false,
+            infoModalOpen: false
 
         }
-    }
+    },
+    methods: {
+        openModal() {
+            this.modalOpen = !this.modalOpen;
+        },
+        closePopup() {
+          this.modalOpen = false;
+        },
+        close() {
+          this.$emit("input", !this.value);
+        },
+        openMeasureModal() {
+            this.measureModalOpen = !this.measureModalOpen;
+        },
+        closeMeasurePopup() {
+          this.measureModalOpen = false;
+        },
+        openInfoModal() {
+            this.infoModalOpen = !this.infoModalOpen;
+        },
+        closeInfoPopup() {
+          this.infoModalOpen = false;
+        } 
+      } 
 }
 </script>
 
 <style scoped>
-.about{
+.edit-details{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -151,6 +208,36 @@ router-link{
     margin-top:20px;
 }
 .bottomButtonWrapper{
+  width:100%;
+}
+.editDetailsOverlay{
+  background-color: rgba(4,148,252,.66);
+  position: absolute;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width:100%;
+  padding:10px 0px;
+  left: 0;
+}
+.changePhotoOverlay{
+  top:23%;
+}
+.changeMeasurementsOverlay{
+  top:59%;
+}
+.changeInfoOverlay{
+  top:75%;
+}
+.editDetailsOverlay h4{
+  color:#ffffff;
+  margin:10px 0px;
+}
+.overlayIcon{
+  width: 40px;
+}
+.modalWidth{
   width:100%;
 }
 </style>

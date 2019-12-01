@@ -67,15 +67,15 @@ h3{
   left: 117px;
 }
 .Chest{
-  top:-275px;
+  top:-277px;
   left:50px;
 }
 .Waist{
-  top:-260px;
+  top:-267px;
   left:51px;
 }
 .Hip{
-  top:-260px;
+  top:-274px;
   left:51px;
 }
 .LegLength{

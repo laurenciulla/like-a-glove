@@ -1,5 +1,5 @@
 <template>
-  <div class="idealCard">
+  <div class="favItemMeasurements">
     <div>
       <img :src="image">
       <h3 v-for="(value, name) in object" v-bind:class="name" v-bind:key ="name">
@@ -7,15 +7,14 @@
         <span v-else> cm</span>
       </h3>
     </div>
-    
-    <h2>{{ item }}</h2>
+  
   </div>
   
 </template>
 
 <script>
 export default {
-  name: 'idealCard',
+  name: 'favItemMeasurements',
   props: {
     msg: String
   },
@@ -41,14 +40,12 @@ export default {
 *{
   box-sizing: border-box;
 }
-.idealCard{
-  border:#CDE9FD 3px solid;
-  border-radius: 5px;
+.favItemMeasurements{
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   width:170px;
-  max-height: 240px;
+  max-height: 210px;
 }
 img{
   width:100%;

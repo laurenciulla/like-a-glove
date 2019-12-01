@@ -1,12 +1,17 @@
 <template>
   <div id="app">
     <nav>
-      <img class="logo" alt="Like a Glove logo" src="@/assets/likeaglovelogo.png">
+      <router-link to="/" class="noback"><img src="@/assets/back.png" class="back"></router-link>
+        <img class="logo" alt="Like a Glove logo" src="@/assets/likeaglovelogo.png">
+        <router-link to="/"><img src="@/assets/logout.png" class="logout"></router-link>
     </nav>
     <div id="measurements">
       <div class="left">
         <profileCard></profileCard>
-        <h1>Measurements</h1>
+        <div class="editDiv">
+          <h1>Measurements</h1> 
+          <router-link to="/edit-measurements"><img src="@/assets/edit.png" class="edit" alt="Edit Measurements"></router-link>
+        </div>
         <ul>
           <li v-for ="(value, name) in measurements" v-bind:key ="name">
             {{ name }}: {{ value }} 
@@ -75,7 +80,9 @@ export default {
           Hip: 34,
           LegLength: 29
       },
-      inches: true
+      inches: true,
+      active: false,
+      value: null
     }
   }
 }
@@ -107,8 +114,9 @@ export default {
   width:50%;
 }
 .right{
-  width: 50%;
-  margin-right: 2%;
+  position: absolute;
+  right:25px;
+  width:40%;
 }
 .bodyGuide{
   width: 90%;
@@ -122,7 +130,7 @@ nav{
   background-color:#CDE9FD;
   width:100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 ul{
   list-style-type: none;
@@ -134,6 +142,7 @@ h3{
   font-weight: 400;
   font-size:13px;
   position: relative;
+  max-width: 30px;
 }
 .Height{
   top:0px;
@@ -149,6 +158,7 @@ h3{
 }
 .logo{
   width:40%;
+  align-self:center;
 }
 body{
   margin:0;
@@ -156,5 +166,29 @@ body{
 }
 .app{
   overflow-x: hidden;
+}
+.edit{
+  width: 60%;
+  align-self: center;
+  padding-left: 6px;
+  padding-top: 15px;
+}
+.edit:after{
+  width: 100%;
+  align-self: center;
+  padding-left: 5px;
+  padding-top: 23px;
+}
+.editDiv{
+  display: flex;
+  flex-direction: row;
+}
+.back, .logout{
+  width: 70%;
+  align-self: center;
+  margin: 0px 10px;
+}
+.noback{
+  z-index: -10;
 }
 </style>
