@@ -1,11 +1,20 @@
 <template>
-  <div class="infoModal" v-show="value">
-    <div class="modal">
-      <h4>Edit Item Info</h4>
+  <div class="new-item">
+    <nav>
+        <router-link to="/"><img src="@/assets/back.png" class="back"></router-link>
+        <img class="logo" alt="Like a Glove logo" src="@/assets/likeaglovelogo.png">
+        <router-link to="/"><img src="@/assets/logout.png" class="logout"></router-link>
+    </nav>
+    <div class="new-item-wrapper">
+      <h4>New Item</h4>
       <form class="editInfoForm">
         <div class="infoFormRow">
+          <label for="Store">Item Name</label>
+          <input type="text" name="itemName" value="">
+        </div>
+        <div class="infoFormRow">
           <label for="Store">Store</label>
-          <input type="text" name="Store" value="Brandy Melville">
+          <input type="text" name="Store" value="">
         </div>
         <!-- <div class="infoFormRow">
           <label for="Colors">Colors</label>
@@ -89,67 +98,92 @@
           </select>
         </div>
 
-        <button type="submit" to="/" class="save">Save Info</button>
+        <button @click="openNewPictureModal" class="iconButton"><img src="@/assets/camera.png" class="overlayIconNew"><span class="buttontext">Add Photo</span></button>
+
+        <div class="modalWidth" v-click-outside="closeNewPicturePopup">
+          <!-- <button @click="openModal">Open Modal</button> -->
+          <newPictureModal v-model="newPictureModalOpen" class="enterMeasurementsModal"></newPictureModal>
+        </div>
+
+        <button @click="openMeasureModal" class="iconButton"><img src="@/assets/ruler.png" class="overlayIconNew"><span class="buttontext">Measure</span></button>
+
+        <div class="modalWidth" v-click-outside="closeMeasurePopup">
+          <!-- <button @click="openModal">Open Modal</button> -->
+          <measureModal v-model="measureModalOpen" class="measureModal"></measureModal>
+        </div>
+
+        <a class="cancel">Cancel</a>
+
+        <button type="submit" to="/" class="bottomButton-new">Save Item</button>
       </form>
-      <a>Cancel</a>
+      
     </div>
   </div>
-  
 </template>
 
 <script>
+import newPictureModal from '@/components/newPictureModal.vue'
+import measureModal from '@/components/measureModal.vue'
 import RangeSlider from 'vue-range-slider'
 import 'vue-range-slider/dist/vue-range-slider.css'
-
-export default {
-  data() {
-    return{
-      sliderValue:50,
-    }
-  },
-  name: 'infoModal',
-  components: {
-    RangeSlider
-  },
-  props: {
-    value: {
-      required: true
-    }
-  },
+export default{
+    name:'About',
+    components:{
+      RangeSlider,
+      newPictureModal,
+      measureModal
+    },
     methods: {
-        closePopup() {
-          this.modalOpen = false;
-        } 
-      }
-};
+        // closePopup() {
+        //   this.modalOpen = false;
+        // },
+        openNewPictureModal() {
+            this.newPictureModalOpen = !this.newPictureModalOpen;
+        },
+        closeNewPicturePopup() {
+          this.newPictureModalOpen = false;
+        },
+        openMeasureModal() {
+            this.measureModalOpen = !this.measureModalOpen;
+        },
+        closeMeasurePopup() {
+          this.measureModalOpen = false;
+        }   
+      },
+    data(){
+        return{
+            item: 'Scrunchy Top',
+            image:'./assets/scrunchy-top.jpg',
+            type:'top',
+            object: {
+              Shoulder_Width: 10,
+              Shoulder_Length: 2,
+              Chest: 3,
+              Bust: 32,
+              Waist: 28
+            },
+            info: {
+                Store: 'Express',
+                Colors: 'Pink',
+                Style: 'Casual',
+                Fabric: 'Cotton',
+                Fit: "Form-Fitting"
+            },
+            inches:true,
+            sliderValue:50,
+            newPictureModalOpen: false,
+            measureModalOpen: false
+
+        }
+    }
+}
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-*{
-  box-sizing: border-box;
-}
-.infoModal{
-  width:100%;
-  height:100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background-color:rgba(205,233,253,.66);
-  z-index: 1000;
-}
-.modal{
-  width:90%;
+.new-item-wrapper{
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  background-color: #ffffff;
-  z-index: 1000;
-  position: absolute;
-  top:150px;
-  border-radius: 5px;
-  padding:20px 0px;
 }
 button{
   background-color: #0494FC;
@@ -160,6 +194,10 @@ button{
   padding:15px 30px;
   margin:10px 0px;
   width: 80%;
+}
+.iconButton{
+  padding:10px 30px;
+  width:100%;
 }
 h4{
   margin:10px;
@@ -284,5 +322,31 @@ span.range-slider-fill{
 }
 .save{
   width:100%;
+}
+.overlayIconNew{
+  width: 30px;
+  /*display: block;*/
+}
+.buttontext{
+  display: block;
+  margin-top:5px;
+}
+.bottomButton-new{
+    width:100%;
+    border-radius: 0;
+    padding:20px;
+    display: block;
+    margin:0;
+    margin-top:20px;
+    width:125%;
+    margin-left: -12.5%;
+}
+.cancel{
+  text-align: center;
+  width: 100%;
+  display: block;
+}
+.new-item-wrapper h4{
+  margin-top:30px;
 }
 </style>

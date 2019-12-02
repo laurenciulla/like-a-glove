@@ -46,6 +46,7 @@
       <h1>Your Favorite Items</h1>
       <div class="cardContainer">
         <favItemCard class="card"></favItemCard>
+        <newItemCard class="new-card"></newItemCard>
       </div>
     </div>
     
@@ -62,6 +63,7 @@ import profileCard from '@/components/profileCard.vue'
 import idealCard from '@/components/idealCard.vue'
 import bodyGuide from '@/components/bodyGuide.vue'
 import favItemCard from '@/components/favItemCard.vue'
+import newItemCard from '@/components/newItemCard.vue'
 export default {
   name: 'Home',
   components: {
@@ -69,7 +71,8 @@ export default {
     profileCard,
     idealCard,
     bodyGuide,
-    favItemCard
+    favItemCard,
+    newItemCard
   },
   data(){
     return{
@@ -101,6 +104,11 @@ export default {
   margin-top:15px;
   margin-right:25px;
   min-width: 180px;
+}
+.new-card{
+  margin-top:15px;
+  margin-right:25px;
+  min-width:120px;
 }
 .cardContainer{
   display: flex;

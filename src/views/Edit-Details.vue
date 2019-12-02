@@ -20,6 +20,15 @@
       <pictureModal v-model="modalOpen"></pictureModal>
     </div>
 
+    <a @click="openNameModal" class="changeItemOverlay editDetailsOverlay">
+        <h4>Change Item Name</h4>
+    </a>
+
+    <div class="modalWidth" v-click-outside="closeNamePopup">
+      <!-- <button @click="openModal">Open Modal</button> -->
+      <itemNameModal v-model="nameModalOpen"></itemNameModal>
+    </div>
+
     <div class="measurements">
         <div class="left">
             <h1>Measurements</h1>
@@ -59,7 +68,7 @@
       <infoModal v-model="infoModalOpen"></infoModal>
     </div>
     <!-- <router-link to="/edit-details"><button>Edit Item</button></router-link> -->
-    <router-link to="/details">Delete Item</router-link>
+    <router-link to="/details" class="delete">Delete Item</router-link>
     <router-link to="/details" class="bottomButtonWrapper"><button class="bottomButton">Save Item</button></router-link>
   </div>
 </template>
@@ -69,13 +78,15 @@ import favItemMeasurements from '@/components/favItemMeasurements.vue'
 import pictureModal from '@/components/pictureModal.vue'
 import measureModal from '@/components/measureModal.vue'
 import infoModal from '@/components/infoModal.vue'
+import itemNameModal from '@/components/itemNameModal.vue'
 export default{
     name:'About',
     components: {
       pictureModal,
       favItemMeasurements,
       measureModal,
-      infoModal
+      infoModal,
+      itemNameModal
     },
     data(){
         return{
@@ -99,7 +110,8 @@ export default{
             inches:true,
             modalOpen: false,
             measureModalOpen: false,
-            infoModalOpen: false
+            infoModalOpen: false,
+            nameModalOpen: false
 
         }
     },
@@ -124,6 +136,12 @@ export default{
         },
         closeInfoPopup() {
           this.infoModalOpen = false;
+        },
+        openNameModal() {
+            this.nameModalOpen = !this.nameModalOpen;
+        },
+        closeNamePopup() {
+          this.nameModalOpen = false;
         } 
       } 
 }
@@ -224,11 +242,15 @@ router-link{
 .changePhotoOverlay{
   top:23%;
 }
+.changeItemOverlay{
+  top:43%;
+  padding:0px 0px;
+}
 .changeMeasurementsOverlay{
-  top:59%;
+  top:58%;
 }
 .changeInfoOverlay{
-  top:75%;
+  top:74%;
 }
 .editDetailsOverlay h4{
   color:#ffffff;
@@ -239,5 +261,8 @@ router-link{
 }
 .modalWidth{
   width:100%;
+}
+.delete{
+  margin-top:20px;
 }
 </style>

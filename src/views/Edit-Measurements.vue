@@ -196,7 +196,7 @@ input{
   margin-left: 5px;
   width:25px;
 }
-textarea:focus, input:focus{
+textarea:focus, input:focus, select:focus{
     outline: none;
 }
 .switch-wrapper{
