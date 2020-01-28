@@ -99,7 +99,8 @@
 
 <script>
 import RangeSlider from 'vue-range-slider'
-import 'vue-range-slider/dist/vue-range-slider.css'
+
+import 'vue-range-slider/dist/vue-range-slider.scss'
 
 export default {
   data() {
@@ -125,7 +126,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
+// $rail-fill-color: red !default;
 *{
   box-sizing: border-box;
 }
@@ -271,9 +273,9 @@ input[type=checkbox] {
   width:100%;
   padding:0;
 }
-span.range-slider-fill{
-  background-color: #0494FC;
-}
+// .range-slider-fill {
+//   background-color: $rail-fill-color;
+// }
 .fitLabels{
   display: flex;
   flex-direction: row;
@@ -284,5 +286,11 @@ span.range-slider-fill{
 }
 .save{
   width:100%;
+}
+</style>
+<style lang="scss">
+$rail-fill-color: #0494FC !default;
+.range-slider-fill {
+  background-color: $rail-fill-color;
 }
 </style>
