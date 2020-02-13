@@ -64,6 +64,8 @@ import idealCard from '@/components/idealCard.vue'
 import bodyGuide from '@/components/bodyGuide.vue'
 import favItemCard from '@/components/favItemCard.vue'
 import newItemCard from '@/components/newItemCard.vue'
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 export default {
   name: 'Home',
   components: {
@@ -85,9 +87,46 @@ export default {
       },
       inches: true,
       active: false,
-      value: null
+      value: null,
+      allUsers: [],
     }
-  }
+  },
+
+  methods : {
+    getUsers: function() {
+      /* eslint-disable no-debugger, no-console */
+            var db = firebase.firestore();
+
+            // gets all users
+            db.collection("users").get().then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                    // doc.data() is never undefined for query doc snapshots
+                    console.log(doc.id, " => ", doc.data());
+                });
+            });
+
+            // Add a new document in collection "users"
+            db.collection("users").doc("joel").set({
+                name: "Joel Salisbury",
+                height: "4984058948",
+                age: "49859485948"
+            })
+            .then(function() {
+                console.log("Document successfully written!");
+            })
+            .catch(function(error) {
+                console.error("Error writing document: ", error);
+            });
+
+
+
+    }
+  },
+
+   mounted: function () {
+    this.getUsers();
+   
+  },
 }
 </script>
 
