@@ -1,10 +1,11 @@
 <template>
   <div class="new-item">
-    <nav>
+    <navBar></navBar>
+<!--     <nav>
         <router-link to="/"><img src="@/assets/back.png" class="back"></router-link>
         <img class="logo" alt="Like a Glove logo" src="@/assets/likeaglovelogo.png">
         <router-link to="/"><img src="@/assets/logout.png" class="logout"></router-link>
-    </nav>
+    </nav> -->
     <div class="new-item-wrapper">
       <h4>New Item</h4>
       <form class="editInfoForm">
@@ -126,12 +127,14 @@ import newPictureModal from '@/components/newPictureModal.vue'
 import measureModal from '@/components/measureModal.vue'
 import RangeSlider from 'vue-range-slider'
 import 'vue-range-slider/dist/vue-range-slider.css'
+import navBar from '@/components/navBar.vue'
 export default{
     name:'About',
     components:{
       RangeSlider,
       newPictureModal,
-      measureModal
+      measureModal,
+      navBar
     },
     methods: {
         // closePopup() {
@@ -348,5 +351,11 @@ span.range-slider-fill{
 }
 .new-item-wrapper h4{
   margin-top:30px;
+}
+</style>
+<style lang="scss">
+$rail-fill-color: #0494FC !default;
+.range-slider-fill {
+  background-color: $rail-fill-color;
 }
 </style>

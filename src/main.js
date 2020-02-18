@@ -19,8 +19,32 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-new Vue({
-  router,
-  firebase,
-  render: h => h(App)
-}).$mount('#app')
+let app;
+firebase.auth().onAuthStateChanged(user => {
+  // this stuff just makes the console work idk
+        /* eslint-disable no-debugger, no-console */
+        var db = firebase.firestore();
+
+        // gets all users
+        db.collection("users").get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+            });
+        });
+  // end this stuff just makes the console work idk
+  // i am console logging just to make the no-unused-vars error shut up
+  console.log(user);
+  if(!app) {
+    app = new Vue({
+      router,
+      firebase,
+      render: h => h(App)
+    }).$mount('#app')
+  }
+})
+
+
+
+
+

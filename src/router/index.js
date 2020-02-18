@@ -8,6 +8,8 @@ Vue.use(vClickOutside)
 
 import VueRouter from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 Vue.use(VueRouter)
 
@@ -15,7 +17,10 @@ const routes = [
   {
     path: '/',
     name: 'dashboard',
-    component: Dashboard
+    component: Dashboard,
+    meta: {
+        requiresAuth: true
+    }
   },
   {
     path: '/details',
@@ -23,7 +28,10 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Details.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Details.vue'),
+    meta: {
+        requiresAuth: true
+    }
   },
     {
     path: '/edit-measurements',
@@ -31,7 +39,10 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Edit-Measurements.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Edit-Measurements.vue'),
+    meta: {
+        requiresAuth: true
+    }
   },
     {
     path: '/edit-details',
@@ -39,7 +50,10 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Edit-Details.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Edit-Details.vue'),
+    meta: {
+        requiresAuth: true
+    }
   },
     {
     path: '/new-item',
@@ -47,7 +61,10 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/New-Item.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/New-Item.vue'),
+    meta: {
+        requiresAuth: true
+    }
   },
     {
     path: '/login',
@@ -55,7 +72,10 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue'),
+    meta: {
+        requiresGuest: true
+    }
   }
   ,
     {
@@ -64,12 +84,55 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Create-Account.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Create-Account.vue'),
+    meta: {
+        requiresGuest: true
+    }
   }
 ]
 
-const router = new VueRouter({
+let router = new VueRouter({
   routes
 })
 
 export default router
+
+// nav guards
+router.beforeEach((to, from, next) => {
+    // check for requiredAuth guard
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        //check if NOT logged in
+        if(!firebase.auth().currentUser){
+            //go to login page
+            next({
+                path: '/login',
+                query: {
+                    redirect: to.fullPath
+                }
+            });
+        } else {
+            //Proceed to route
+            next();
+        }
+    } else if(to.matched.some(record => record.meta.requiresGuest)) {
+        //check if IS logged in
+        if(firebase.auth().currentUser){
+            //go to login page
+            next({
+                path: '/',
+                query: {
+                    redirect: to.fullPath
+                }
+            });
+        } else {
+            //Proceed to route
+            next();
+        }
+    } else {
+        //Proceed to route
+        next();
+    }
+})
+
+
+

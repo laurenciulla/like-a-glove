@@ -1,10 +1,11 @@
 <template>
   <div id="app">
-    <nav>
+    <navBarDash></navBarDash>
+<!--     <nav>
       <router-link to="/" class="noback"><img src="@/assets/back.png" class="back"></router-link>
         <img class="logo" alt="Like a Glove logo" src="@/assets/likeaglovelogo.png">
-        <router-link to="/"><img src="@/assets/logout.png" class="logout"></router-link>
-    </nav>
+        <router-link v-on:click="logout" class="logout">Log Out</router-link>
+    </nav> -->
     <div id="measurements">
       <div class="left">
         <profileCard></profileCard>
@@ -64,6 +65,7 @@ import idealCard from '@/components/idealCard.vue'
 import bodyGuide from '@/components/bodyGuide.vue'
 import favItemCard from '@/components/favItemCard.vue'
 import newItemCard from '@/components/newItemCard.vue'
+import navBarDash from '@/components/navBarDash.vue'
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 export default {
@@ -74,7 +76,8 @@ export default {
     idealCard,
     bodyGuide,
     favItemCard,
-    newItemCard
+    newItemCard,
+    navBarDash
   },
   data(){
     return{
@@ -91,7 +94,12 @@ export default {
       allUsers: [],
     }
   },
-
+created() {
+    if (firebase.auth().currentUser) {
+      this.isLoggedIn = true;
+      this.currentUser = firebase.auth().currentUser.email;
+    }
+  },
   methods : {
     getUsers: function() {
       /* eslint-disable no-debugger, no-console */
@@ -106,20 +114,30 @@ export default {
             });
 
             // Add a new document in collection "users"
-            db.collection("users").doc("joel").set({
-                name: "Joel Salisbury",
-                height: "4984058948",
-                age: "49859485948"
-            })
-            .then(function() {
-                console.log("Document successfully written!");
-            })
-            .catch(function(error) {
-                console.error("Error writing document: ", error);
-            });
-
-
-
+            var testing = false;
+            if (testing == true) {
+              db.collection("users").doc().set({
+                name: "Test",
+                email: "Email",
+                username: "Username",
+                password: "Password",
+                photo: "Photo",
+                measurements: [
+                  { height: "x" },
+                  { chest: "x" },
+                  { waist: "x" },
+                  { hip: "x" },
+                  { leg_length: "x" }
+                ],
+                inches: true
+              })
+              .then(function() {
+                  console.log("Document successfully written!");
+              })
+              .catch(function(error) {
+                  console.error("Error writing document: ", error);
+              });
+            }
     }
   },
 
@@ -229,13 +247,5 @@ body{
 .editDiv{
   display: flex;
   flex-direction: row;
-}
-.back, .logout{
-  width: 70%;
-  align-self: center;
-  margin: 0px 10px;
-}
-.noback{
-  z-index: -10;
 }
 </style>

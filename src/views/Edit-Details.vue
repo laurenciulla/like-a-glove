@@ -1,10 +1,11 @@
 <template>
   <div class="edit-details">
-    <nav>
+    <navBar></navBar>
+    <!-- <nav>
         <router-link to="/details"><img src="@/assets/back.png" class="back"></router-link>
         <img class="logo" alt="Like a Glove logo" src="@/assets/likeaglovelogo.png">
         <router-link to="/"><img src="@/assets/logout.png" class="logout"></router-link>
-    </nav>
+    </nav> -->
     <div class="top">
         <!-- // <img :src="image" class="favItemPic"> -->
         <h2>{{ item }}</h2>
@@ -79,6 +80,7 @@ import pictureModal from '@/components/pictureModal.vue'
 import measureModal from '@/components/measureModal.vue'
 import infoModal from '@/components/infoModal.vue'
 import itemNameModal from '@/components/itemNameModal.vue'
+import navBar from '@/components/navBar.vue'
 export default{
     name:'About',
     components: {
@@ -86,7 +88,8 @@ export default{
       favItemMeasurements,
       measureModal,
       infoModal,
-      itemNameModal
+      itemNameModal,
+      navBar
     },
     data(){
         return{

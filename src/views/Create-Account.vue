@@ -7,27 +7,27 @@
       <form class="loginForm">
         <div class="infoFormRow">
           <label for="Email">Email Address</label>
-          <input type="text" name="Email" value="">
+          <input type="text" name="Email" v-model="email">
         </div>
-        <div class="infoFormRow">
+<!--         <div class="infoFormRow">
           <label for="Username">Username</label>
           <input type="text" name="Username" value="">
-        </div>
+        </div> -->
         <div class="infoFormRow">
           <label for="Password">Password</label>
-          <input type="text" name="Password" value="">
+          <input type="password" name="Password" v-model="password">
         </div>
-        <div class="infoFormRow">
+        <!-- <div class="infoFormRow">
           <label for="confirmPassword">Confirm Password</label>
           <input type="text" name="confirmPassword" value="">
-        </div>
-        <div class="infoFormRow">
+        </div> -->
+        <!-- <div class="infoFormRow">
           <label for="image">Profile Photo</label>
           <input type="file" name="image" value="">
-        </div>
+        </div> -->
       
 
-        <button type="submit" class="createButton" to="/">Create Account</button>
+        <button v-on:click="createAccount" class="createButton" to="/">Create Account</button>
       </form>
       <a href="">Cancel</a>
     </div>
@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 export default{
     name:'About',
     components:{
@@ -42,27 +44,38 @@ export default{
     },
     data(){
         return{
-            item: 'Scrunchy Top',
-            image:'./assets/scrunchy-top.jpg',
-            type:'top',
-            object: {
-              Shoulder_Width: 10,
-              Shoulder_Length: 2,
-              Chest: 3,
-              Bust: 32,
-              Waist: 28
-            },
-            info: {
-                Store: 'Express',
-                Colors: 'Pink',
-                Style: 'Casual',
-                Fabric: 'Cotton',
-                Fit: "Form-Fitting"
-            },
-            inches:true,
-
+          email: '',
+          password: '',
 
         }
+    },
+    methods: {
+      createAccount: function(e) {
+        // this stuff just makes the console work idk
+        /* eslint-disable no-debugger, no-console */
+        var db = firebase.firestore();
+
+        // gets all users
+        db.collection("users").get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+            });
+        });
+        // end this stuff just makes the console work idk
+
+        // console.log("register");
+        firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+        .then(user => {
+          alert(`Account created for ${user.email}`);
+          this.$router.go({path: this.$router.path});
+        },
+        err => {
+          alert(err.message);
+        }
+        );
+        e.preventDefault();
+      }
     }
 }
 </script>
