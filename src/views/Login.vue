@@ -1,20 +1,21 @@
 <template>
   <div class="login">
+    <!-- <navBar></navBar> -->
 
     <div class="wrapper">
       <img src="@/assets/likeaglovelogo.png" class="loginlogo">
       <form class="loginForm">
         <div class="infoFormRow">
-          <label for="Username">Username</label>
-          <input type="text" name="Username" value="">
+          <label for="Email">Email</label>
+          <input type="text" name="Email" v-model="email">
         </div>
         <div class="infoFormRow">
           <label for="Password">Password</label>
-          <input type="text" name="Password" value="">
+          <input type="password" name="Password" v-model="password">
         </div>
       
 
-        <button type="submit" class="formButton" to="/">Log In</button>
+        <button type="submit" class="formButton" to="/" v-on:click="login">Log In</button>
       </form>
 
       <router-link to="/create-account"><button >Create Account</button></router-link>
@@ -24,34 +25,48 @@
 </template>
 
 <script>
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
+// import navBar from '@/components/navBar.vue'
 export default{
-    name:'About',
+    name:'Login',
     components:{
-      
+      // navBar
     },
     data(){
         return{
-            item: 'Scrunchy Top',
-            image:'./assets/scrunchy-top.jpg',
-            type:'top',
-            object: {
-              Shoulder_Width: 10,
-              Shoulder_Length: 2,
-              Chest: 3,
-              Bust: 32,
-              Waist: 28
-            },
-            info: {
-                Store: 'Express',
-                Colors: 'Pink',
-                Style: 'Casual',
-                Fabric: 'Cotton',
-                Fit: "Form-Fitting"
-            },
-            inches:true,
-
+          email: '',
+          password: '',
 
         }
+    },
+    methods: {
+      login: function(e) {
+        // this stuff just makes the console work idk
+        /* eslint-disable no-debugger, no-console */
+        var db = firebase.firestore();
+
+        // gets all users
+        db.collection("users").get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+            });
+        });
+        // end this stuff just makes the console work idk
+
+        // console.log("register");
+        firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        .then(user => {
+          alert(`You are logged in as ${user.email}`);
+          this.$router.go({path: this.$router.path});
+        },
+        err => {
+          alert(err.message);
+        }
+        );
+        e.preventDefault();
+      }
     }
 }
 </script>

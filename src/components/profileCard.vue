@@ -3,12 +3,14 @@
     <div class="imageHolder">
       <img v-bind:src="image">
     </div>
-    <h2>{{ username }}</h2>
+    <h2>{{ currentUser }}</h2>
   </div>
   
 </template>
 
 <script>
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 export default {
   name: 'profileCard',
   props: {
@@ -19,7 +21,13 @@ export default {
       username: 'Username',
       image:'./assets/profile-photo.jpg',
     }
-  }
+  },
+  created() {
+    if (firebase.auth().currentUser) {
+      this.isLoggedIn = true;
+      this.currentUser = firebase.auth().currentUser.email;
+    }
+  },
 }
 </script>
 

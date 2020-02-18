@@ -1,10 +1,11 @@
 <template>
   <div class="about">
-    <nav>
+    <navBar></navBar>
+    <!-- <nav>
         <router-link to="/"><img src="@/assets/back.png" class="back"></router-link>
         <img class="logo" alt="Like a Glove logo" src="@/assets/likeaglovelogo.png">
         <router-link to="/"><img src="@/assets/logout.png" class="logout"></router-link>
-    </nav>
+    </nav> -->
     <div class="top">
         <!-- // <img :src="image" class="favItemPic"> -->
         <h2>{{ item }}</h2>
@@ -41,10 +42,12 @@
 
 <script>
   import favItemMeasurements from '@/components/favItemMeasurements.vue'
+  import navBar from '@/components/navBar.vue'
 export default{
     name:'About',
     components:{
-      favItemMeasurements
+      favItemMeasurements,
+      navBar
     },
     data(){
         return{

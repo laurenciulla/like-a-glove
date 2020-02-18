@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <nav>
+    <navBar></navBar>
+<!--     <nav>
       <img class="logo" alt="Like a Glove logo" src="@/assets/likeaglovelogo.png">
-    </nav>
+    </nav> -->
     <div id="measurements">
       <div class="left">
         <profileCard></profileCard>
@@ -118,6 +119,7 @@ import profileCard from '@/components/profileCard.vue'
 import idealCard from '@/components/idealCard.vue'
 import bodyGuide from '@/components/bodyGuide.vue'
 import favItemCard from '@/components/favItemCard.vue'
+import navBar from '@/components/navBar.vue'
 export default {
   name: 'Home',
   components: {
@@ -125,7 +127,8 @@ export default {
     profileCard,
     idealCard,
     bodyGuide,
-    favItemCard
+    favItemCard,
+    navBar
   },
   data(){
     return{
