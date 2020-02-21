@@ -11,13 +11,14 @@
         <profileCard></profileCard>
         <div class="editDiv">
           <h1>Measurements</h1> 
+          <!-- <p>{{ userID }}</p> -->
           <router-link to="/edit-measurements"><img src="@/assets/edit.png" class="edit" alt="Edit Measurements"></router-link>
         </div>
         <ul>
           <li v-for ="(value, name) in measurements" v-bind:key ="name">
             {{ name }}: {{ value }} 
-            <span v-if="inches"> in</span>
-            <span v-else> cm</span>
+            <span v-if="value"><span v-if="inches"> in</span><span v-else> cm</span></span>
+            
           </li>
         </ul>
       </div>
@@ -82,11 +83,11 @@ export default {
   data(){
     return{
         measurements: {
-          Height: 67,
-          Chest: 32,
-          Waist: 28,
-          Hip: 34,
-          LegLength: 29
+          // Height: "",
+          // Chest: "",
+          // Waist: "",
+          // Hip: "",
+          // LegLength: ""
       },
       inches: true,
       active: false,
@@ -97,47 +98,78 @@ export default {
 created() {
     if (firebase.auth().currentUser) {
       this.isLoggedIn = true;
-      this.currentUser = firebase.auth().currentUser.email;
+      this.userID = firebase.auth().currentUser.uid;
     }
   },
   methods : {
     getUsers: function() {
+            var that = this;
       /* eslint-disable no-debugger, no-console */
             var db = firebase.firestore();
 
             // gets all users
-            db.collection("users").get().then(function(querySnapshot) {
-                querySnapshot.forEach(function(doc) {
-                    // doc.data() is never undefined for query doc snapshots
-                    console.log(doc.id, " => ", doc.data());
-                });
+            // db.collection("users").get().then(function(querySnapshot) {
+            //     querySnapshot.forEach(function(doc) {
+            //         // doc.data() is never undefined for query doc snapshots
+            //         // console.log(doc.id, " => ", doc.data());
+            //     });
+            // });
+
+            // var currentUserRef = db.collection("users").doc(firebase.auth().currentUser.uid);
+            // console.log(currentUserRef);
+
+
+
+            // identifying current user
+            var currentUserID = firebase.auth().currentUser.uid;
+            console.log(currentUserID);
+
+            // getting user with current user's id
+            var docRef = db.collection("users").doc(currentUserID);
+
+            docRef.get().then(function(doc) {
+                if (doc.exists) {
+                    console.log("Document data:", doc.data());
+                    console.log(doc.data().email);
+                    var currentUserEmail = doc.data().measurements;
+                    that.measurements = currentUserEmail;
+                    return currentUserEmail;
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
             });
 
+            // console.log(currentUserEmail);
+
+
             // Add a new document in collection "users"
-            var testing = false;
-            if (testing == true) {
-              db.collection("users").doc().set({
-                name: "Test",
-                email: "Email",
-                username: "Username",
-                password: "Password",
-                photo: "Photo",
-                measurements: [
-                  { height: "x" },
-                  { chest: "x" },
-                  { waist: "x" },
-                  { hip: "x" },
-                  { leg_length: "x" }
-                ],
-                inches: true
-              })
-              .then(function() {
-                  console.log("Document successfully written!");
-              })
-              .catch(function(error) {
-                  console.error("Error writing document: ", error);
-              });
-            }
+            // var testing = false;
+            // if (testing == true) {
+            //   db.collection("users").doc().set({
+            //     name: "Test",
+            //     email: "Email",
+            //     username: "Username",
+            //     password: "Password",
+            //     photo: "Photo",
+            //     measurements: {
+            //       Height: 67,
+            //       Chest: 32,
+            //       Waist: 28,
+            //       Hip: 34,
+            //       LegLength: 29
+            //     },
+            //     inches: true
+            //   })
+            //   .then(function() {
+            //       console.log("Document successfully written!");
+            //   })
+            //   .catch(function(error) {
+            //       console.error("Error writing document: ", error);
+            //   });
+            // }
     }
   },
 

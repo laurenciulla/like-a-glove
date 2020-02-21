@@ -2,9 +2,9 @@
   <div class="idealCard">
     <div>
       <img :src="image">
-      <h3 v-for="(value, name) in object" v-bind:class="name" v-bind:key ="name">
-        {{ value }}<span v-if="inches">"</span>
-        <span v-else> cm</span>
+      <h3 v-for="(value, name) in measurements" v-bind:class="name" v-bind:key ="name">
+        {{ value }}<span v-if="value"><span v-if="inches">"</span>
+        <span v-else> cm</span></span>
       </h3>
     </div>
   </div>
@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 export default {
   name: 'idealCard',
   props: {
@@ -21,16 +23,56 @@ export default {
     return {
       item: 'Top',
       image:'./assets/body-guide.png',
-      object: {
-          Height: 67,
-          Chest: 32,
-          Waist: 28,
-          Hip: 34,
-          LegLength: 28
+      measurements: {
+          Height: "",
+          Chest: "",
+          Waist: "",
+          Hip: "",
+          LegLength: ""
       },
       inches:true
     }
-  }
+  },
+created() {
+    if (firebase.auth().currentUser) {
+      this.isLoggedIn = true;
+      this.userID = firebase.auth().currentUser.uid;
+    }
+  },
+  methods : {
+    getUsers: function() {
+            var that = this;
+      /* eslint-disable no-debugger, no-console */
+            var db = firebase.firestore();
+
+            // identifying current user
+            var currentUserID = firebase.auth().currentUser.uid;
+            console.log(currentUserID);
+
+            // getting user with current user's id
+            var docRef = db.collection("users").doc(currentUserID);
+
+            docRef.get().then(function(doc) {
+                if (doc.exists) {
+                    console.log("Document data:", doc.data());
+                    console.log(doc.data().email);
+                    var currentUserEmail = doc.data().measurements;
+                    that.measurements = currentUserEmail;
+                    return currentUserEmail;
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });
+    }
+  },
+
+   mounted: function () {
+    this.getUsers();
+   
+  },
 }
 </script>
 
@@ -63,23 +105,23 @@ h3{
   position: relative;
 }
 .Height{
-  top:-300px;
+  top:-350px;
   left: 117px;
 }
 .Chest{
-  top:-277px;
+  top:-245px;
   left:50px;
 }
 .Waist{
-  top:-267px;
+  top:-334px;
   left:51px;
 }
 .Hip{
-  top:-274px;
+  top:-242px;
   left:51px;
 }
 .LegLength{
-  top:-230px;
+  top:-220px;
   left:5px;
 }
 ul {
