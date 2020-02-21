@@ -51,33 +51,67 @@ export default{
     },
     methods: {
       createAccount: function(e) {
-        // this stuff just makes the console work idk
-        /* eslint-disable no-debugger, no-console */
-        var db = firebase.firestore();
-
-        // gets all users
-        db.collection("users").get().then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
-                // doc.data() is never undefined for query doc snapshots
-                console.log(doc.id, " => ", doc.data());
-            });
-        });
-        // end this stuff just makes the console work idk
+        
+        let that = this;
 
         // console.log("register");
         firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
         .then(user => {
-          alert(`Account created for ${user.email}`);
-          this.$router.go({path: this.$router.path});
+                /* eslint-disable no-debugger, no-console */
+          console.log(user);
+
+          alert(`Account created for ${this.email}`);
+          // this stuff just makes the console work idk
+          /* eslint-disable no-debugger, no-console */
+          var db = firebase.firestore();
+
+          // gets all users
+          db.collection("users").get().then(function(querySnapshot) {
+              querySnapshot.forEach(function(doc) {
+                  // doc.data() is never undefined for query doc snapshots
+                  // console.log(doc.id, " => ", doc.data());
+              });
+          });
+          // end this stuff just makes the console work idk
+
+          // Add a new document in collection "users"
+        
+          
+            db.collection("users").doc(firebase.auth().currentUser.uid).set({
+              name: "",
+              email: firebase.auth().currentUser.email,
+              measurements: {
+                  Height: "",
+                  Chest: "",
+                  Waist: "",
+                  Hip: "",
+                  LegLength: ""
+                },
+              inches: true
+            })
+            .then(function() {
+                alert("Document successfully written!");
+                that.$router.go({path: that.$router.path});
+
+            })
+            .catch(function(error) {
+                alert("Error writing document: ", error);
+            });
+            
+
+        // end of add a new document in collection "users"
         },
         err => {
           alert(err.message);
         }
         );
         e.preventDefault();
-      }
-    }
-}
+
+        
+            
+      } // end of create account method
+    } //end of methods
+} //end of export default
 </script>
 
 <style scoped>

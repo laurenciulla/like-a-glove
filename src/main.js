@@ -29,12 +29,12 @@ firebase.auth().onAuthStateChanged(user => {
         db.collection("users").get().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
                 // doc.data() is never undefined for query doc snapshots
-                console.log(doc.id, " => ", doc.data());
+                // console.log(doc.id, " => ", doc.data());
             });
         });
   // end this stuff just makes the console work idk
   // i am console logging just to make the no-unused-vars error shut up
-  console.log(user);
+  // console.log(user);
   if(!app) {
     app = new Vue({
       router,
