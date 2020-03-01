@@ -47,15 +47,15 @@ created() {
 
             // identifying current user
             var currentUserID = firebase.auth().currentUser.uid;
-            console.log(currentUserID);
+            // console.log(currentUserID);
 
             // getting user with current user's id
             var docRef = db.collection("users").doc(currentUserID);
 
             docRef.get().then(function(doc) {
                 if (doc.exists) {
-                    console.log("Document data:", doc.data());
-                    console.log(doc.data().email);
+                    // console.log("Document data:", doc.data());
+                    // console.log(doc.data().email);
                     var currentUserEmail = doc.data().measurements;
                     that.measurements = currentUserEmail;
                     return currentUserEmail;

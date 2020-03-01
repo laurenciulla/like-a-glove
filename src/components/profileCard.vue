@@ -3,7 +3,7 @@
     <div class="imageHolder">
       <img v-bind:src="image">
     </div>
-    <h2>{{ currentUser }}</h2>
+    <h2>{{ currentUserName }}</h2>
   </div>
   
 </template>
@@ -18,15 +18,40 @@ export default {
   },
   data(){
     return {
-      username: 'Username',
       image:'./assets/profile-photo.jpg',
+      currentUserName: ''
     }
   },
   created() {
-    if (firebase.auth().currentUser) {
-      this.isLoggedIn = true;
-      this.currentUser = firebase.auth().currentUser.email;
-    }
+    // var currentUserName;
+    // if (firebase.auth().currentUser) {
+
+      var that = this;
+      // this.isLoggedIn = true;
+      var currentUserID = firebase.auth().currentUser.uid;
+      var currentUserName = that.currentUserName;
+      
+
+      var db = firebase.firestore();
+      var docRef = db.collection("users").doc(currentUserID);
+
+      docRef.get().then(function(doc) {
+          if (doc.exists) {
+              // console.log("Document data:", doc.data().name);
+              console.log(doc.data().name);
+              var currentUserName = doc.data().name;
+              that.currentUserName = currentUserName;
+              return currentUserName;
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch(function(error) {
+          console.log("Error getting document:", error);
+      });
+      console.log(currentUserName);
+
+    // }
   },
 }
 </script>
