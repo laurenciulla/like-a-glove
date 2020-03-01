@@ -9,10 +9,10 @@
           <label for="Email">Email Address</label>
           <input type="text" name="Email" v-model="email">
         </div>
-<!--         <div class="infoFormRow">
-          <label for="Username">Username</label>
-          <input type="text" name="Username" value="">
-        </div> -->
+        <div class="infoFormRow">
+          <label for="Name">Name</label>
+          <input type="text" name="Name" v-model="Name">
+        </div>
         <div class="infoFormRow">
           <label for="Password">Password</label>
           <input type="password" name="Password" v-model="password">
@@ -29,7 +29,7 @@
 
         <button v-on:click="createAccount" class="createButton" to="/">Create Account</button>
       </form>
-      <a href="">Cancel</a>
+      <router-link to="/login">Cancel</router-link>
     </div>
   </div>
 </template>
@@ -46,7 +46,7 @@ export default{
         return{
           email: '',
           password: '',
-
+          Name:''
         }
     },
     methods: {
@@ -78,7 +78,7 @@ export default{
         
           
             db.collection("users").doc(firebase.auth().currentUser.uid).set({
-              name: "",
+              name: that.Name,
               email: firebase.auth().currentUser.email,
               measurements: {
                   Height: "",
@@ -91,7 +91,8 @@ export default{
             })
             .then(function() {
                 alert("Document successfully written!");
-                that.$router.go({path: that.$router.path});
+                //that.$router.go({path: that.$router.path});
+                 that.$router.push({ name: 'enter-measurements' });
 
             })
             .catch(function(error) {

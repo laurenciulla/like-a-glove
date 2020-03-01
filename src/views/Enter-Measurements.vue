@@ -8,7 +8,7 @@
       <div class="left">
         <profileCard></profileCard>
         <div class="editDiv">
-          <h1 class="measurements-active">Edit Measurements</h1>
+          <h1 class="measurements-active">Enter Measurements</h1>
         </div>
 
         <form action="/">
