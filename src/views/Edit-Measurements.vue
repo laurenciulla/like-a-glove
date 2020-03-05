@@ -205,7 +205,32 @@ created() {
   },
 
    mounted: function () {
-    this.editMeasurementValue(this.measurements.Height);
+    //this.editMeasurementValue(this.measurements.Height);
+                var that = this;
+      /* eslint-disable no-debugger, no-console */
+            var db = firebase.firestore();
+
+            // identifying current user
+            var currentUserID = firebase.auth().currentUser.uid;
+            console.log(currentUserID);
+
+            // getting user with current user's id
+            var docRef = db.collection("users").doc(currentUserID);
+
+            docRef.get().then(function(doc) {
+                if (doc.exists) {
+                    console.log("Document data:", doc.data());
+                    console.log(doc.data().email);
+                    var currentUserEmail = doc.data().measurements;
+                    that.measurements = currentUserEmail;
+                    return currentUserEmail;
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });
    
   },
 }

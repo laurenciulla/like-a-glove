@@ -46,7 +46,7 @@
               <div class="right">
                   <favItemMeasurements class="favItemMeasurements"></favItemMeasurements>
                 </div>
-              <button type="submit" to="/">Save Info</button>
+              <button to="/" v-on:click="enterItemMeasurements">Save Info</button>
 
             </form>
           </div>
@@ -65,7 +65,8 @@
 
 <script>
 import favItemMeasurements from '@/components/favItemMeasurements.vue'
-
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 export default {
   name: 'enterMeasurementsModal',
   components: {
@@ -91,7 +92,42 @@ export default {
     methods: {
         closePopup() {
           this.modalOpen = false;
-        } 
+        },
+        enterItemMeasurements: function(e) {
+            var that = this;
+            /* eslint-disable no-debugger, no-console */
+            var db = firebase.firestore();
+
+            // identifying current user
+            var currentUserID = firebase.auth().currentUser.uid;
+            console.log(currentUserID);
+
+            // getting user with current user's id
+            var docRef = db.collection("users").doc(currentUserID);
+
+            docRef.update({
+              favItems: firebase.firestore.FieldValue.arrayUnion(
+                  {
+                    itemMeasurements: {
+                      Shoulder_Width: 5,
+                      // Shoulder_Length: "",
+                      // Chest: "",
+                      // Bust: "",
+                      // Waist: ""
+                    },
+                  }
+                )
+            })
+            .then(function() {
+                alert("Your changes have been saved!");
+                that.$router.push('/');
+
+            })
+            .catch(function(error) {
+                alert("Error writing document: ", error);
+            });
+            e.preventDefault();
+    } 
       }
 };
 </script>
