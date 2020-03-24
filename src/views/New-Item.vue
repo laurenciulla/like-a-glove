@@ -22,25 +22,25 @@
           <div class="colorCheckboxContainer">
             <span class="colorCheckboxVisible red"><input name="Red" type="checkbox" class="colorCheckbox" v-model="info.Colors.Red"></span>
 
-            <span class="colorCheckboxVisible orange"><input name="Colors" type="checkbox" value="Orange" class="colorCheckbox" v-model="info.Colors.Orange"></span>
+            <span class="colorCheckboxVisible orange"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Orange"></span>
 
-            <span class="colorCheckboxVisible yellow"><input name="Colors" type="checkbox" value="Yellow" class="colorCheckbox" v-model="info.Colors.Yellow"></span>
+            <span class="colorCheckboxVisible yellow"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Yellow"></span>
 
-            <span class="colorCheckboxVisible green"><input name="Colors" type="checkbox" value="Green" class="colorCheckbox" v-model="info.Colors.Green"></span>
+            <span class="colorCheckboxVisible green"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Green"></span>
 
-            <span class="colorCheckboxVisible blue"><input name="Colors" type="checkbox" value="Blue" class="colorCheckbox" v-model="info.Colors.Blue"></span>
+            <span class="colorCheckboxVisible blue"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Blue"></span>
 
-            <span class="colorCheckboxVisible purple"><input name="Colors" type="checkbox" value="Purple" class="colorCheckbox" v-model="info.Colors.Purple"></span>
+            <span class="colorCheckboxVisible purple"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Purple"></span>
 
-            <span class="colorCheckboxVisible pink"><input name="Colors" type="checkbox" value="Pink" class="colorCheckbox" v-model="info.Colors.Pink"></span>
+            <span class="colorCheckboxVisible pink"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Pink"></span>
 
-            <span class="colorCheckboxVisible white"><input name="Colors" type="checkbox" value="White" class="colorCheckbox" v-model="info.Colors.White"></span>
+            <span class="colorCheckboxVisible white"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.White"></span>
 
-            <span class="colorCheckboxVisible black"><input name="Colors" type="checkbox" value="Black" class="colorCheckbox" v-model="info.Colors.Black"></span>
+            <span class="colorCheckboxVisible black"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Black"></span>
 
-            <span class="colorCheckboxVisible silver"><input name="Colors" type="checkbox" value="Silver" class="colorCheckbox" v-model="info.Colors.Silver"></span>
+            <span class="colorCheckboxVisible silver"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Silver"></span>
 
-            <span class="colorCheckboxVisible gold"><input name="Colors" type="checkbox" value="Gold" class="colorCheckbox" v-model="info.Colors.Gold"></span>
+            <span class="colorCheckboxVisible gold"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Gold"></span>
           </div>          
         </div>
         <div class="infoFormRow">
@@ -99,7 +99,7 @@
 
         <a class="cancel">Cancel</a>
 
-        <button v-on:click="createNewItem" class="bottomButton-new">Save Item</button>
+        <button @click="createNewItem" class="bottomButton-new">Save Item</button>
       </form>
       
     </div>
@@ -204,7 +204,7 @@ export default{
             item: '',
             image:'./assets/scrunchy-top.jpg',
             type:'top',
-            object: {
+            itemMeasurements: {
               Shoulder_Width: 10,
               Shoulder_Length: 2,
               Chest: 3,
