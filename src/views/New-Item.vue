@@ -214,17 +214,17 @@ export default{
             info: {
                 Store: '',
                 Colors: {
-                  red: false,
-                  orange: false,
-                  yellow: false,
-                  green: false,
-                  blue: false,
-                  purple: false,
-                  pink: false,
-                  white: false,
-                  black: false,
-                  silver: false,
-                  gold: false
+                  Red: false,
+                  Orange: false,
+                  Yellow: false,
+                  Green: false,
+                  Blue: false,
+                  Purple: false,
+                  Pink: false,
+                  White: false,
+                  Black: false,
+                  Silver: false,
+                  Gold: false
                 },
                 Style: '',
                 Fabric: '',
