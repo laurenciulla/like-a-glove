@@ -23,11 +23,8 @@ export default {
     }
   },
   created() {
-    // var currentUserName;
-    // if (firebase.auth().currentUser) {
 
       var that = this;
-      // this.isLoggedIn = true;
       var currentUserID = firebase.auth().currentUser.uid;
       var currentUserName = that.currentUserName;
       
@@ -38,7 +35,7 @@ export default {
       docRef.get().then(function(doc) {
           if (doc.exists) {
               // console.log("Document data:", doc.data().name);
-              console.log(doc.data().name);
+              // console.log(doc.data().name);
               var currentUserName = doc.data().name;
               that.currentUserName = currentUserName;
               return currentUserName;
@@ -49,9 +46,7 @@ export default {
       }).catch(function(error) {
           console.log("Error getting document:", error);
       });
-      console.log(currentUserName);
-
-    // }
+      // console.log(currentUserName);
   },
 }
 </script>

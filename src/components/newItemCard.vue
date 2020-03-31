@@ -1,7 +1,7 @@
 <template>
   <div class="newItemCard">
     <div class="picture">
-      <router-link to="/new-item"><button class="add">+</button></router-link>
+      <button v-on:click="routeToNewItem" class="add">+</button>
     </div>
     
     <h2>Add Item</h2>
@@ -28,6 +28,13 @@ export default {
           waist: 28
       },
       inches:true
+    }
+  },
+
+  methods: {
+    routeToNewItem: function () {
+      console.log("wtf");
+      this.$router.push({path: "/new-item"});
     }
   }
 }

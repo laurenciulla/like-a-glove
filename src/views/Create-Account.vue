@@ -87,7 +87,9 @@ export default{
                   Hip: "",
                   LegLength: ""
                 },
-              inches: true
+              inches: true,
+              gender: true, //true is female, false is male,
+              favItems: []
             })
             .then(function() {
                 alert("Document successfully written!");

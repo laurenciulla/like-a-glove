@@ -11,57 +11,41 @@
       <form class="editInfoForm">
         <div class="infoFormRow">
           <label for="Store">Item Name</label>
-          <input type="text" name="itemName" value="">
+          <input type="text" name="itemName" v-model="item">
         </div>
         <div class="infoFormRow">
           <label for="Store">Store</label>
-          <input type="text" name="Store" value="">
+          <input type="text" name="Store" v-model="info.Store">
         </div>
-        <!-- <div class="infoFormRow">
-          <label for="Colors">Colors</label>
-          <select name="Colors">
-            <option value="red">Red</option>
-            <option value="orange">Orange</option>
-            <option value="yellow">Yellow</option>
-            <option value="green">Green</option>
-            <option value="blue">Blue</option>
-            <option value="purple">Purple</option>
-            <option value="pink">Pink</option>
-            <option value="white">White</option>
-            <option value="black">Black</option>
-            <option value="silver">Silver</option>
-            <option value="gold">Gold</option>
-          </select>
-        </div> -->
         <div class="infoFormRow">
           <label for="Colors">Colors</label>
           <div class="colorCheckboxContainer">
-            <span class="colorCheckboxVisible red"><input name="Colors" type="checkbox" value="Red" class="colorCheckbox"></span>
+            <span class="colorCheckboxVisible red"><input name="Red" type="checkbox" class="colorCheckbox" v-model="info.Colors.Red"></span>
 
-            <span class="colorCheckboxVisible orange"><input name="Colors" type="checkbox" value="Orange" class="colorCheckbox"></span>
+            <span class="colorCheckboxVisible orange"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Orange"></span>
 
-            <span class="colorCheckboxVisible yellow"><input name="Colors" type="checkbox" value="Yellow" class="colorCheckbox"></span>
+            <span class="colorCheckboxVisible yellow"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Yellow"></span>
 
-            <span class="colorCheckboxVisible green"><input name="Colors" type="checkbox" value="Green" class="colorCheckbox"></span>
+            <span class="colorCheckboxVisible green"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Green"></span>
 
-            <span class="colorCheckboxVisible blue"><input name="Colors" type="checkbox" value="Blue" class="colorCheckbox"></span>
+            <span class="colorCheckboxVisible blue"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Blue"></span>
 
-            <span class="colorCheckboxVisible purple"><input name="Colors" type="checkbox" value="Purple" class="colorCheckbox"></span>
+            <span class="colorCheckboxVisible purple"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Purple"></span>
 
-            <span class="colorCheckboxVisible pink"><input name="Colors" type="checkbox" value="Pink" class="colorCheckbox"></span>
+            <span class="colorCheckboxVisible pink"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Pink"></span>
 
-            <span class="colorCheckboxVisible white"><input name="Colors" type="checkbox" value="White" class="colorCheckbox"></span>
+            <span class="colorCheckboxVisible white"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.White"></span>
 
-            <span class="colorCheckboxVisible black"><input name="Colors" type="checkbox" value="Black" class="colorCheckbox"></span>
+            <span class="colorCheckboxVisible black"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Black"></span>
 
-            <span class="colorCheckboxVisible silver"><input name="Colors" type="checkbox" value="Silver" class="colorCheckbox"></span>
+            <span class="colorCheckboxVisible silver"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Silver"></span>
 
-            <span class="colorCheckboxVisible gold"><input name="Colors" type="checkbox" value="Gold" class="colorCheckbox"></span>
+            <span class="colorCheckboxVisible gold"><input name="Colors" type="checkbox" class="colorCheckbox" v-model="info.Colors.Gold"></span>
           </div>          
         </div>
         <div class="infoFormRow">
           <label for="Style">Style</label>
-          <select name="Style">
+          <select name="Style" v-model="info.styleSelected">
             <option value="casual">Casual</option>
             <option value="edgy">Edgy</option>
             <option value="classic">Classic</option>
@@ -89,7 +73,7 @@
         </div>
         <div class="infoFormRow">
           <label for="Fabric">Fabric</label>
-          <select name="Fabric">
+          <select name="Fabric" v-model="info.fabricSelected">
             <option value="denim">Denim</option>
             <option value="leather">Leather</option>
             <option value="cotton">Cotton</option>
@@ -115,7 +99,7 @@
 
         <a class="cancel">Cancel</a>
 
-        <button type="submit" to="/" class="bottomButton-new">Save Item</button>
+        <button @click="createNewItem" class="bottomButton-new">Save Item</button>
       </form>
       
     </div>
@@ -128,6 +112,8 @@ import measureModal from '@/components/measureModal.vue'
 import RangeSlider from 'vue-range-slider'
 import 'vue-range-slider/dist/vue-range-slider.css'
 import navBar from '@/components/navBar.vue'
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 export default{
     name:'About',
     components:{
@@ -151,14 +137,74 @@ export default{
         },
         closeMeasurePopup() {
           this.measureModalOpen = false;
-        }   
+        },
+        createNewItem: function(e) {
+            var that = this;
+            /* eslint-disable no-debugger, no-console */
+            var db = firebase.firestore();
+
+            // identifying current user
+            var currentUserID = firebase.auth().currentUser.uid;
+            console.log(currentUserID);
+
+            // getting user with current user's id
+            var docRef = db.collection("users").doc(currentUserID);
+                  e.preventDefault();
+
+
+            docRef.update({
+              favItems: firebase.firestore.FieldValue.arrayUnion(
+                  {
+                    item: that.item,
+                    image: './assets/scrunchy-top.jpg',
+                    type: 'top',
+                    itemMeasurements: {
+                      Shoulder_Width: "",
+                      Shoulder_Length: "",
+                      Chest: "",
+                      Bust: "",
+                      Waist: ""
+                    },
+                    info: {
+                      Store: that.info.Store,
+                      Colors: {
+                        red: that.info.Colors.Red,
+                        orange: that.info.Colors.Orange,
+                        yellow: that.info.Colors.Yellow,
+                        green: that.info.Colors.Green,
+                        blue: that.info.Colors.Blue,
+                        purple: that.info.Colors.Purple,
+                        pink: that.info.Colors.Pink,
+                        white: that.info.Colors.White,
+                        black: that.info.Colors.Black,
+                        silver: that.info.Colors.Silver,
+                        gold: that.info.Colors.Gold,
+                      },
+                      Style: that.info.styleSelected,
+                      Fabric: that.info.fabricSelected,
+                      Fit: that.sliderValue
+                    },
+                    // sliderValue:50,
+                  }
+                )
+            })
+            .then(function() {
+                alert("Your changes have been saved!");
+                that.$router.push('/');
+
+            })
+            .catch(function(error) {
+                alert("Error writing document: ", error);
+            });
+           
+          }   
       },
     data(){
         return{
-            item: 'Scrunchy Top',
+            item: '',
             image:'./assets/scrunchy-top.jpg',
             type:'top',
-            object: {
+            itemMeasurements: {
               Shoulder_Width: 10,
               Shoulder_Length: 2,
               Chest: 3,
@@ -166,10 +212,22 @@ export default{
               Waist: 28
             },
             info: {
-                Store: 'Express',
-                Colors: 'Pink',
-                Style: 'Casual',
-                Fabric: 'Cotton',
+                Store: '',
+                Colors: {
+                  Red: false,
+                  Orange: false,
+                  Yellow: false,
+                  Green: false,
+                  Blue: false,
+                  Purple: false,
+                  Pink: false,
+                  White: false,
+                  Black: false,
+                  Silver: false,
+                  Gold: false
+                },
+                Style: '',
+                Fabric: '',
                 Fit: "Form-Fitting"
             },
             inches:true,
@@ -246,7 +304,7 @@ select:focus, input:focus{
   align-items: space-between;
 }
 input[type=checkbox] {
-  visibility: hidden;
+  /*visibility: hidden;*/
 }
 .colorCheckboxVisible{
   position: relative;
