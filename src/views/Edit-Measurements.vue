@@ -135,11 +135,11 @@ export default {
 data(){
     return{
         measurements: {
-          // Height: "",
-          // Chest: "",
-          // Waist: "",
-          // Hip: "",
-          // LegLength: ""
+          Height: "",
+          Chest: "",
+          Waist: "",
+          Hip: "",
+          LegLength: ""
       },
       inches: true,
       active: false,
