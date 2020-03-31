@@ -83,18 +83,79 @@
           </select>
         </div>
 
+
+
+<!--         <button @click="openMeasureModal" class="iconButton"><img src="@/assets/ruler.png" class="overlayIconNew"><span class="buttontext">Measure</span></button> -->
+
+<!--         <div class="modalWidth" v-click-outside="closeMeasurePopup">
+          <measureModal v-model="measureModalOpen" class="measureModal"></measureModal>
+        </div> -->
+        <h4>Item Measurements</h4>
+        <div class="favItemMeasurements-wrapper">
+              <favItemMeasurements class="favItemMeasurements"></favItemMeasurements>
+        </div>
+        <div class="measurements-wrapper">
+          
+          <div class="left-measurements">
+            <div class="form-row">
+              <label for="Shoulder_Width">Shoulder Width:</label>
+              <div class="inches-wrapper">
+                <input id="Shoulder_Width" name="Shoulder_Width" type="text" value="10" v-model="itemMeasurements.Shoulder_Width">
+                <span v-if="inches">in</span>
+                <span v-else>cm</span>
+              </div>
+              <!-- change value to a variable of the user's current value -->
+            </div>
+            <div class="form-row">
+              <label for="Shoulder_Length">Shoulder Length:</label>
+              <div class="inches-wrapper">
+                <input id="Shoulder_Length" name="Shoulder_Length" type="text" v-model="itemMeasurements.Shoulder_Length">
+                <span v-if="inches">in</span>
+                <span v-else>cm</span>
+              </div>
+              <!-- change value to a variable of the user's current value -->
+            </div>
+            <div class="form-row">
+              <label for="Chest">Chest:</label>
+              <div class="inches-wrapper">
+                <input id="Chest" name="Chest" type="text" v-model="itemMeasurements.Chest">
+                <span v-if="inches">in</span>
+                <span v-else>cm</span>
+              </div>
+              <!-- change value to a variable of the user's current value -->
+            </div>
+          </div>
+          <div class="right-measurements">
+            <div class="form-row">
+              <label for="Bust">Bust:</label>
+              <div class="inches-wrapper">
+                <input id="Bust" name="Bust" type="text" v-model="itemMeasurements.Bust">
+                <span v-if="inches">in</span>
+                <span v-else>cm</span>
+              </div>
+              <!-- change value to a variable of the user's current value -->
+            </div>
+            <div class="form-row">
+              <label for="Waist">Waist:</label>
+              <div class="inches-wrapper">
+                <input id="Waist" name="Waist" type="text" v-model="itemMeasurements.Waist">
+                <span v-if="inches">in</span>
+                <span v-else>cm</span>
+              </div>
+              <!-- change value to a variable of the user's current value -->
+            </div>
+          </div>
+
+
+        </div>
+
+        <h4>Upload a Photo</h4>
+
         <button @click="openNewPictureModal" class="iconButton"><img src="@/assets/camera.png" class="overlayIconNew"><span class="buttontext">Add Photo</span></button>
 
         <div class="modalWidth" v-click-outside="closeNewPicturePopup">
           <!-- <button @click="openModal">Open Modal</button> -->
           <newPictureModal v-model="newPictureModalOpen" class="enterMeasurementsModal"></newPictureModal>
-        </div>
-
-        <button @click="openMeasureModal" class="iconButton"><img src="@/assets/ruler.png" class="overlayIconNew"><span class="buttontext">Measure</span></button>
-
-        <div class="modalWidth" v-click-outside="closeMeasurePopup">
-          <!-- <button @click="openModal">Open Modal</button> -->
-          <measureModal v-model="measureModalOpen" class="measureModal"></measureModal>
         </div>
 
         <a class="cancel">Cancel</a>
@@ -108,7 +169,8 @@
 
 <script>
 import newPictureModal from '@/components/newPictureModal.vue'
-import measureModal from '@/components/measureModal.vue'
+// import measureModal from '@/components/measureModal.vue'
+import favItemMeasurements from '@/components/favItemMeasurements.vue'
 import RangeSlider from 'vue-range-slider'
 import 'vue-range-slider/dist/vue-range-slider.css'
 import navBar from '@/components/navBar.vue'
@@ -119,8 +181,9 @@ export default{
     components:{
       RangeSlider,
       newPictureModal,
-      measureModal,
-      navBar
+      // measureModal,
+      navBar,
+      favItemMeasurements
     },
     methods: {
         // closePopup() {
@@ -159,11 +222,11 @@ export default{
                     image: './assets/scrunchy-top.jpg',
                     type: 'top',
                     itemMeasurements: {
-                      Shoulder_Width: "",
-                      Shoulder_Length: "",
-                      Chest: "",
-                      Bust: "",
-                      Waist: ""
+                      Shoulder_Width: that.itemMeasurements.Shoulder_Width,
+                      Shoulder_Length:that.itemMeasurements.Shoulder_Length,
+                      Chest: that.itemMeasurements.Chest,
+                      Bust: that.itemMeasurements.Bust,
+                      Waist: that.itemMeasurements.Waist
                     },
                     info: {
                       Store: that.info.Store,
@@ -205,11 +268,11 @@ export default{
             image:'./assets/scrunchy-top.jpg',
             type:'top',
             itemMeasurements: {
-              Shoulder_Width: 10,
-              Shoulder_Length: 2,
-              Chest: 3,
-              Bust: 32,
-              Waist: 28
+              Shoulder_Width: "",
+              Shoulder_Length: "",
+              Chest: "",
+              Bust: "",
+              Waist: ""
             },
             info: {
                 Store: '',
@@ -262,14 +325,48 @@ button{
 }
 h4{
   margin:10px;
+  text-align: center;
 }
 a{
   margin:10px;
 }
+.measurements-wrapper{
+  display: flex;
+  flex-direction: row;
+}
+.left-measurements{
+  width:100%;
+}
+.inches-wrapper{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+.inches-wrapper span{
+  padding-left: 10px;
+  padding-bottom:5px;
+}
 form.editInfoForm{
   width: 80%;
 }
-.infoFormRow input, .infoFormRow select{
+/*.form-row{
+  display: flex;
+  flex-direction: row;
+}*/
+.favItemMeasurements-wrapper{
+  width:100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.form-row input{
+  width:80px;
+}
+.form-row label{
+  width:120px;
+  display: block;
+}
+.infoFormRow input, .infoFormRow select, .form-row input{
   border:2px #0494FC solid;
   border-radius: 5px;
   padding:8px;
@@ -284,7 +381,7 @@ form.editInfoForm{
   background-size:contain;
   background-color: #ffffff;
 }
-.infoFormRow label{
+.infoFormRow label, .form-row label{
   margin-right: 5px;
   font-size:15px;
   color: #2c3e50;
