@@ -5,7 +5,7 @@
       <router-link to="/details"><button>View Details</button></router-link>
     </div>
     
-    <h2>{{ favItems[0].item }}</h2>
+    <h2>{{ favItemInfo.item }}</h2>
   </div>
   
 </template>
@@ -17,11 +17,7 @@ export default {
   name: 'favItemCard',
   props: {
     msg: String,
-    favItems: 
-      [{
-        item:String,
-        image: './assets/scrunchy-top.jpg'
-      }]
+    itemInfo:Object
     
   },
   data(){
@@ -30,6 +26,7 @@ export default {
       //item: "",
       //image:'./assets/scrunchy-top.jpg',
       type:'top',
+      favItemInfo:this.itemInfo,
       info: {
         Colors: {
           red: "",
@@ -61,6 +58,7 @@ export default {
   },
     created() {
 
+      
       var that = this;
       var currentUserID = firebase.auth().currentUser.uid;
       var currentUserName = that.currentUserName;
