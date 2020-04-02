@@ -5,32 +5,95 @@
       <router-link to="/details"><button>View Details</button></router-link>
     </div>
     
-    <h2>{{ item }}</h2>
+    <h2>{{ favItems[0].item }}</h2>
   </div>
   
 </template>
 
 <script>
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 export default {
-  name: 'idealCard',
+  name: 'favItemCard',
   props: {
-    msg: String
+    msg: String,
+    favItems: 
+      [{
+        item:String,
+        image: './assets/scrunchy-top.jpg'
+      }]
+    
   },
   data(){
     return {
-      item: 'Scrunchy Top',
-      image:'./assets/scrunchy-top.jpg',
+      //favItems: [],
+      //item: "",
+      //image:'./assets/scrunchy-top.jpg',
       type:'top',
-      object: {
-          shoulderWidth: 10,
-          shoulderLength: 2,
-          chest: 3,
-          bust: 32,
-          waist: 28
+      info: {
+        Colors: {
+          red: "",
+          orange: "",
+          yellow: "",
+          green: "",
+          blue: "",
+          purple: "",
+          pink: "",
+          white: "",
+          black: "",
+          silver: "",
+          gold: ""
+        },
+        Fabric: "",
+        Fit: "",
+        Store: "",
+        Style: ""
+      },
+      itemMeasurements: {
+          Shoulder_Width: 10,
+          Shoulder_Length: 2,
+          Chest: 3,
+          Bust: 32,
+          Waist: 28
       },
       inches:true
     }
-  }
+  },
+    created() {
+
+      var that = this;
+      var currentUserID = firebase.auth().currentUser.uid;
+      var currentUserName = that.currentUserName;
+      var favItems = that.favItems;
+      
+
+      var db = firebase.firestore();
+      var docRef = db.collection("users").doc(currentUserID);
+
+      docRef.get().then(function(doc) {
+          if (doc.exists) {
+              // var currentUserName = doc.data().name;
+              // that.currentUserName = currentUserName;
+              // return currentUserName;
+
+              var favItems = doc.data().favItems;
+              that.favItems = favItems;
+              for (var i = favItems.length - 1; i >= 0; i--) {
+                console.log(favItems[i].item); 
+              }
+              return favItems;
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch(function(error) {
+          console.log("Error getting document:", error);
+      });
+      // console.log(currentUserName);
+  },
+
+
+
 }
 </script>
 
