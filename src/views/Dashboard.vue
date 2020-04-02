@@ -47,8 +47,25 @@
     <div id="favItems">
       <h1>Your Favorite Items</h1>
       <div class="cardContainer">
-        <favItemCard class="card"></favItemCard>
+<!--         <ul>
+          <li v-for ="(favItem, item) in favItems" v-bind:key ="item">
+            <favItemCard
+              class="card"
+              v-bind:item="item"
+              ></favItemCard>
+          </li>
+        </ul> -->
+        <!-- <favItemCard class="card"></favItemCard> -->
+        <favItemCard
+        class="card"
+        v-for="favItem in favItems"
+        v-bind:key="favItem.item"
+        v-bind:itemInfo = "favItem"
+        ></favItemCard>
         <newItemCard class="new-card"></newItemCard>
+<!--         <ul v-for="(number, favItem) in favItems" v-bind:key="favItem">
+          <li> {{ favItem }} </li>
+        </ul> -->
       </div>
     </div>
     
@@ -80,6 +97,14 @@ export default {
     newItemCard,
     navBarDash
   },
+    props: {
+    favItems: 
+      [{
+        item:String,
+        //image: './assets/scrunchy-top.jpg'
+      }]
+    
+  },
   data(){
     return{
         measurements: {
@@ -89,6 +114,7 @@ export default {
           // Hip: "",
           // LegLength: ""
       },
+      //favItems: [],
       inches: true,
       active: false,
       value: null,
@@ -107,24 +133,8 @@ created() {
       /* eslint-disable no-debugger, no-console */
             var db = firebase.firestore();
 
-            // gets all users
-            // db.collection("users").get().then(function(querySnapshot) {
-            //     querySnapshot.forEach(function(doc) {
-            //         // doc.data() is never undefined for query doc snapshots
-            //         // console.log(doc.id, " => ", doc.data());
-            //     });
-            // });
 
-            // var currentUserRef = db.collection("users").doc(firebase.auth().currentUser.uid);
-            // console.log(currentUserRef);
-
-
-
-            // identifying current user
             var currentUserID = firebase.auth().currentUser.uid;
-            // console.log(currentUserID);
-
-            // getting user with current user's id
             var docRef = db.collection("users").doc(currentUserID);
 
             docRef.get().then(function(doc) {
@@ -133,7 +143,16 @@ created() {
                     // console.log(doc.data().email);
                     var currentUserEmail = doc.data().measurements;
                     that.measurements = currentUserEmail;
-                    return currentUserEmail;
+
+                    var favItems = doc.data().favItems;
+                    that.favItems = favItems;
+                    for (var i = favItems.length - 1; i >= 0; i--) {
+                      console.log(favItems[i].item);
+                    }
+                    
+                    // console.log(favItems[0].item);
+                    return currentUserEmail, favItems;
+                    
                 } else {
                     // doc.data() will be undefined in this case
                     console.log("No such document!");
