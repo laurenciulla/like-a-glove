@@ -8,30 +8,33 @@
     </nav> -->
     <div class="top">
         <!-- // <img :src="image" class="favItemPic"> -->
-        <h2>{{ item }}</h2>
+          
+          <h2>{{ item }}</h2>
+
+        
     </div>
     <div class="measurements">
         <div class="left">
             <h1>Measurements</h1>
-            <ul>
+<!--             <ul>
               <li  v-for="(value, name) in object" v-bind:key="name">
                 {{ name }}: {{ value }}<span v-if="inches">"</span>
                 <span v-else> cm</span>
               </li>
-            </ul>
+            </ul> -->
         </div>
         <div class="right">
           <favItemMeasurements></favItemMeasurements>
         </div>
     </div>
     <div class="itemInfoWrapper">
-      <div class="itemInfo">
+      <div class="item-Info">
           <h1>Item Info</h1>
-          <ul class="info">
+<!--           <ul class="info">
                 <li v-bind:key="name" v-for="(value, name) in info">
                   {{ name }}: {{ value }}
                 </li>
-              </ul>
+              </ul> -->
       </div>
     </div>
     <router-link to="/edit-details"><button>Edit Item</button></router-link>
@@ -41,37 +44,81 @@
 </template>
 
 <script>
-  import favItemMeasurements from '@/components/favItemMeasurements.vue'
-  import navBar from '@/components/navBar.vue'
+import favItemMeasurements from '@/components/favItemMeasurements.vue'
+import navBar from '@/components/navBar.vue'
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 export default{
-    name:'About',
+    name:'Details',
+    props: {
+      msg: String,
+      itemInfo:Object,
+      item:String
+    },
     components:{
       favItemMeasurements,
       navBar
     },
     data(){
         return{
-            item: 'Scrunchy Top',
-            image:'./assets/scrunchy-top.jpg',
-            type:'top',
-            object: {
-              Shoulder_Width: 10,
-              Shoulder_Length: 2,
-              Chest: 3,
-              Bust: 32,
-              Waist: 28
-            },
-            info: {
-                Store: 'Express',
-                Colors: 'Pink',
-                Style: 'Casual',
-                Fabric: 'Cotton',
-                Fit: "Form-Fitting"
-            },
-            inches:true
+          favItemInfo:this.itemInfo,
+          favItems: [],
+          // item:"",
+          info: {
+                  Colors: {
+                    red: "",
+                    orange: "",
+                    yellow: "",
+                    green: "",
+                    blue: "",
+                    purple: "",
+                    pink: "",
+                    white: "",
+                    black: "",
+                    silver: "",
+                    gold: ""
+                  },
+                  Fabric: "",
+                  Fit: "",
+                  Store: "",
+                  Style: ""
+                },
+                itemMeasurements: {
+                    Shoulder_Width: 10,
+                    Shoulder_Length: 2,
+                    Chest: 3,
+                    Bust: 32,
+                    Waist: 28
+                },
+                inches:true
 
         }
-    }
+    },
+    created() {
+
+      
+      var that = this;
+      var currentUserID = firebase.auth().currentUser.uid;
+      var currentUserName = that.currentUserName;
+      var favItems = that.favItems;
+      
+
+      var db = firebase.firestore();
+      var docRef = db.collection("users").doc(currentUserID);
+
+      docRef.get().then(function(doc) {
+          if (doc.exists) {
+              var favItems = doc.data().favItems;
+              that.favItems = favItems;
+              return favItems;
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch(function(error) {
+          console.log("Error getting document:", error);
+      });
+  },
 }
 </script>
 
@@ -110,7 +157,7 @@ h2{
     background-size:cover;
     width:100%;
 }
-.itemInfo{
+.item-Info{
     margin-left: 5%;
     width: 100%;
 }

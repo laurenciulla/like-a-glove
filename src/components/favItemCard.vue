@@ -2,7 +2,9 @@
   <div class="idealCard">
     <div class="picture">
       <!-- <img :src="image"> -->
-      <router-link to="/details"><button>View Details</button></router-link>
+      <!-- <router-link to="/details"><button>View Details</button></router-link> -->
+      <!-- <router-link :to="{ name: 'details', params: {item: favItemInfo.item } }"><button>View Details</button></router-link> -->
+      <router-link :to="{name: 'details', params: { item: favItemInfo.item } }"><button>View Details</button></router-link>
     </div>
     
     <h2>{{ favItemInfo.item }}</h2>
@@ -70,15 +72,11 @@ export default {
 
       docRef.get().then(function(doc) {
           if (doc.exists) {
-              // var currentUserName = doc.data().name;
-              // that.currentUserName = currentUserName;
-              // return currentUserName;
-
               var favItems = doc.data().favItems;
               that.favItems = favItems;
-              for (var i = favItems.length - 1; i >= 0; i--) {
-                console.log(favItems[i].item); 
-              }
+              // for (var i = favItems.length - 1; i >= 0; i--) {
+              //   console.log(favItems[i].item); 
+              // }
               return favItems;
           } else {
               // doc.data() will be undefined in this case
