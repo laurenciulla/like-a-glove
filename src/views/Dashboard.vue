@@ -98,11 +98,11 @@ export default {
     navBarDash
   },
     props: {
-    favItems: 
-      [{
-        item:String,
-        //image: './assets/scrunchy-top.jpg'
-      }]
+    // favItems: 
+    //   [{
+    //     item:String,
+    //     // image: './assets/scrunchy-top.jpg'
+    //   }]
     
   },
   data(){
@@ -114,7 +114,7 @@ export default {
           // Hip: "",
           // LegLength: ""
       },
-      //favItems: [],
+      favItems: [],
       inches: true,
       active: false,
       value: null,
@@ -139,18 +139,14 @@ created() {
 
             docRef.get().then(function(doc) {
                 if (doc.exists) {
-                    // console.log("Document data:", doc.data());
-                    // console.log(doc.data().email);
                     var currentUserEmail = doc.data().measurements;
                     that.measurements = currentUserEmail;
 
                     var favItems = doc.data().favItems;
                     that.favItems = favItems;
-                    for (var i = favItems.length - 1; i >= 0; i--) {
-                      console.log(favItems[i].item);
-                    }
-                    
-                    // console.log(favItems[0].item);
+                    // for (var i = favItems.length - 1; i >= 0; i--) {
+                    //   console.log(favItems[i].item);
+                    // }
                     return currentUserEmail, favItems;
                     
                 } else {
@@ -242,7 +238,7 @@ h3{
   text-align: center;
   color: #2c3e50;
   text-align: left;
-  font-size:18px;
+  font-size:17px;
 }
 .logo{
   width:40%;
