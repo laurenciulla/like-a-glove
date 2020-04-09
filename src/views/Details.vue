@@ -9,7 +9,7 @@
     <div class="top">
         <!-- // <img :src="image" class="favItemPic"> -->
           
-          <h2>{{ item }}</h2>
+          <h2>{{ item  }}</h2>
 
         
     </div>
@@ -22,6 +22,12 @@
                 <span v-else> cm</span>
               </li>
             </ul> -->
+            <ul>
+              <li  v-for="(value, name) in favItemInfo.itemMeasurements" v-bind:key="name">
+                {{ name }}: {{ value }}<span class="tiny-in" v-if="inches"> in</span>
+                <span v-else> cm</span>
+              </li>
+            </ul>
         </div>
         <div class="right">
           <favItemMeasurements></favItemMeasurements>
@@ -30,11 +36,28 @@
     <div class="itemInfoWrapper">
       <div class="item-Info">
           <h1>Item Info</h1>
-<!--           <ul class="info">
-                <li v-bind:key="name" v-for="(value, name) in info">
-                  {{ name }}: {{ value }}
+          <ul class="info">
+                <li>
+                  Store: {{ favItemInfo.info.Store }}
                 </li>
-              </ul> -->
+                <li>
+                  Fabric: {{ favItemInfo.info.Fabric }}
+                </li>
+                <li>
+                  Style: {{ favItemInfo.info.Style }}
+                </li>
+                <li>
+                  Colors: <ul  v-for="(value, color) in favItemInfo.info.Colors" v-bind:key="color" class="color-list">
+                <li v-if="value" class="color-style">{{ color }}</li>
+                <!-- <span v-if="color == true">, </span> -->
+                    </ul>
+                </li>
+                <li>
+                  Fit: <span v-if="favItemInfo.info.Fit <= 33">Loose-Fitting</span>
+                      <span v-if="favItemInfo.info.Fit > 33 && favItemInfo.info.Fit < 66">Average</span>
+                      <span v-if="favItemInfo.info.Fit >= 66">Form-Fitting</span>
+                </li>
+              </ul>
       </div>
     </div>
     <router-link to="/edit-details"><button>Edit Item</button></router-link>
@@ -64,32 +87,32 @@ export default{
           favItemInfo:this.itemInfo,
           favItems: [],
           // item:"",
-          info: {
-                  Colors: {
-                    red: "",
-                    orange: "",
-                    yellow: "",
-                    green: "",
-                    blue: "",
-                    purple: "",
-                    pink: "",
-                    white: "",
-                    black: "",
-                    silver: "",
-                    gold: ""
-                  },
-                  Fabric: "",
-                  Fit: "",
-                  Store: "",
-                  Style: ""
-                },
-                itemMeasurements: {
-                    Shoulder_Width: 10,
-                    Shoulder_Length: 2,
-                    Chest: 3,
-                    Bust: 32,
-                    Waist: 28
-                },
+          // info: {
+          //         Colors: {
+          //           red: "",
+          //           orange: "",
+          //           yellow: "",
+          //           green: "",
+          //           blue: "",
+          //           purple: "",
+          //           pink: "",
+          //           white: "",
+          //           black: "",
+          //           silver: "",
+          //           gold: ""
+          //         },
+          //         Fabric: "",
+          //         Fit: "",
+          //         Store: "",
+          //         Style: ""
+          //       },
+          //       itemMeasurements: {
+          //           Shoulder_Width: this.itemInfo.itemMeasurements.Shoulder_Width,
+          //           Shoulder_Length: 2,
+          //           Chest: 3,
+          //           Bust: 32,
+          //           Waist: 28
+          //       },
                 inches:true
 
         }
@@ -132,6 +155,9 @@ export default{
     display: flex;
     flex-direction: row;
     width: 100%;
+}
+.tiny-in{
+  font-size: 16px;
 }
 h2{
     background-color: #CDE9FD;
@@ -203,4 +229,15 @@ router-link{
 .bottomButtonWrapper{
   width:100%;
 }
+.color-list{
+  list-style: none;
+  display: inline-block;
+}
+li.color-style{
+  text-transform: capitalize;
+  display:inline;
+  margin-right: 5px;
+}
+
+
 </style>

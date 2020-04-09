@@ -238,7 +238,7 @@ h3{
   text-align: center;
   color: #2c3e50;
   text-align: left;
-  font-size:18px;
+  font-size:17px;
 }
 .logo{
   width:40%;

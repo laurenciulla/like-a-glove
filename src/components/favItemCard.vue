@@ -4,7 +4,7 @@
       <!-- <img :src="image"> -->
       <!-- <router-link to="/details"><button>View Details</button></router-link> -->
       <!-- <router-link :to="{ name: 'details', params: {item: favItemInfo.item } }"><button>View Details</button></router-link> -->
-      <router-link :to="{name: 'details', params: { item: favItemInfo.item } }"><button>View Details</button></router-link>
+      <router-link :to="{name: 'details', params: { item: favItemInfo.item, itemInfo: favItemInfo } }"><button>View Details</button></router-link>
     </div>
     
     <h2>{{ favItemInfo.item }}</h2>
