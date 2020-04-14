@@ -30,7 +30,9 @@
             </ul>
         </div>
         <div class="right">
-          <favItemMeasurements></favItemMeasurements>
+          
+         <favItemMeasurements v-bind:itemInfo = "favItemInfo"></favItemMeasurements>
+        
         </div>
     </div>
     <div class="itemInfoWrapper">
@@ -76,7 +78,8 @@ export default{
     props: {
       msg: String,
       itemInfo:Object,
-      item:String
+      item:String,
+      itemMeasurements:Object
     },
     components:{
       favItemMeasurements,
