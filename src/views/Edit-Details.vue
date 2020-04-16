@@ -1,73 +1,84 @@
 <template>
   <div class="edit-details">
     <navBar></navBar>
-    <!-- <nav>
-        <router-link to="/details"><img src="@/assets/back.png" class="back"></router-link>
-        <img class="logo" alt="Like a Glove logo" src="@/assets/likeaglovelogo.png">
-        <router-link to="/"><img src="@/assets/logout.png" class="logout"></router-link>
-    </nav> -->
     <div class="top">
         <!-- // <img :src="image" class="favItemPic"> -->
         <h2>{{ item }}</h2>
         
     </div>
-    <a @click="openModal" class="changePhotoOverlay editDetailsOverlay">
+    <router-link class="changePhotoOverlay editDetailsOverlay" :to="{name: 'edit-details-item', params: { item: favItemInfo.item, itemInfo: favItemInfo } }">
         <img src="@/assets/camera.png" class="overlayIcon">
         <h4>Change Photo</h4>
-    </a>
+    </router-link>
     <!-- <pictureModal></pictureModal> -->
-    <div class="modalWidth" v-click-outside="closePopup">
-      <!-- <button @click="openModal">Open Modal</button> -->
+<!--     <div class="modalWidth" v-click-outside="closePopup">
+      <button @click="openModal">Open Modal</button>
       <pictureModal v-model="modalOpen"></pictureModal>
-    </div>
+    </div> -->
 
-    <a @click="openNameModal" class="changeItemOverlay editDetailsOverlay">
+    <router-link class="changeItemOverlay editDetailsOverlay" :to="{name: 'edit-details-item', params: { item: favItemInfo.item, itemInfo: favItemInfo } }">
         <h4>Change Item Name</h4>
-    </a>
+    </router-link>
 
-    <div class="modalWidth" v-click-outside="closeNamePopup">
-      <!-- <button @click="openModal">Open Modal</button> -->
+<!--     <div class="modalWidth" v-click-outside="closeNamePopup">
+      <button @click="openModal">Open Modal</button>
       <itemNameModal v-model="nameModalOpen"></itemNameModal>
-    </div>
+    </div> -->
 
     <div class="measurements">
         <div class="left">
             <h1>Measurements</h1>
             <ul>
-              <li  v-for="(value, name) in object" v-bind:key="name">
-                {{ name }}: {{ value }}<span v-if="inches">"</span>
+              <li  v-for="(value, name) in favItemInfo.itemMeasurements" v-bind:key="name">
+                {{ name }}: {{ value }}<span class="tiny-in" v-if="inches"> in</span>
                 <span v-else> cm</span>
               </li>
             </ul>
         </div>
         <div class="right">
-          <favItemMeasurements></favItemMeasurements>
+          <favItemMeasurements v-bind:itemInfo = "favItemInfo"></favItemMeasurements>
         </div>
     </div>
-    <a @click="openMeasureModal" class="changeMeasurementsOverlay editDetailsOverlay">
+    <a class="changeMeasurementsOverlay editDetailsOverlay">
         <img src="@/assets/ruler.png" class="overlayIcon">
         <h4>Re-measure</h4>
     </a>
-    <div class="modalWidth" v-click-outside="closeMeasurePopup">
+<!--     <div class="modalWidth" v-click-outside="closeMeasurePopup">
       <measureModal v-model="measureModalOpen"></measureModal>
-    </div>
+    </div> -->
     <div class="itemInfoWrapper">
       <div class="itemInfo">
           <h1>Item Info</h1>
           <ul class="info">
-                <li v-bind:key="name" v-for="(value, name) in info">
-                  {{ name }}: {{ value }}
+                <li>
+                  Store: {{ favItemInfo.info.Store }}
+                </li>
+                <li>
+                  Fabric: {{ favItemInfo.info.Fabric }}
+                </li>
+                <li>
+                  Style: {{ favItemInfo.info.Style }}
+                </li>
+                <li>
+                  Colors: <ul  v-for="(value, color) in favItemInfo.info.Colors" v-bind:key="color" class="color-list">
+                <li v-if="value" class="color-style">{{ color }}</li>
+                    </ul>
+                </li>
+                <li>
+                  Fit: <span v-if="favItemInfo.info.Fit <= 33">Loose-Fitting</span>
+                      <span v-if="favItemInfo.info.Fit > 33 && favItemInfo.info.Fit < 66">Average</span>
+                      <span v-if="favItemInfo.info.Fit >= 66">Form-Fitting</span>
                 </li>
               </ul>
       </div>
     </div>
-    <a @click="openInfoModal" class="changeInfoOverlay editDetailsOverlay">
+    <a class="changeInfoOverlay editDetailsOverlay">
         <img src="@/assets/pencil.png" class="overlayIcon">
         <h4>Edit Info</h4>
     </a>
-    <div class="modalWidth" v-click-outside="closeInfoPopup">
+<!--     <div class="modalWidth" v-click-outside="closeInfoPopup">
       <infoModal v-model="infoModalOpen"></infoModal>
-    </div>
+    </div> -->
     <!-- <router-link to="/edit-details"><button>Edit Item</button></router-link> -->
     <router-link to="/details" class="delete">Delete Item</router-link>
     <router-link to="/details" class="bottomButtonWrapper"><button class="bottomButton">Save Item</button></router-link>
@@ -76,77 +87,90 @@
 
 <script>
 import favItemMeasurements from '@/components/favItemMeasurements.vue'
-import pictureModal from '@/components/pictureModal.vue'
-import measureModal from '@/components/measureModal.vue'
-import infoModal from '@/components/infoModal.vue'
-import itemNameModal from '@/components/itemNameModal.vue'
+// import pictureModal from '@/components/pictureModal.vue'
+// import measureModal from '@/components/measureModal.vue'
+// import infoModal from '@/components/infoModal.vue'
+// import itemNameModal from '@/components/itemNameModal.vue'
 import navBar from '@/components/navBar.vue'
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 export default{
-    name:'About',
+    name:'edit-details',
+    props: {
+      msg: String,
+      itemInfo:Object,
+      item:String
+    },
     components: {
-      pictureModal,
+      // pictureModal,
       favItemMeasurements,
-      measureModal,
-      infoModal,
-      itemNameModal,
+      // measureModal,
+      // infoModal,
+      // itemNameModal,
       navBar
     },
     data(){
         return{
-            item: 'Scrunchy Top',
-            image:'./assets/scrunchy-top.jpg',
-            type:'top',
-            object: {
-              Shoulder_Width: 10,
-              Shoulder_Length: 2,
-              Chest: 3,
-              Bust: 32,
-              Waist: 28
-            },
-            info: {
-                Store: 'Express',
-                Colors: 'Pink',
-                Style: 'Casual',
-                Fabric: 'Cotton',
-                Fit: "Form-Fitting"
-            },
-            inches:true,
-            modalOpen: false,
-            measureModalOpen: false,
-            infoModalOpen: false,
-            nameModalOpen: false
+          favItemInfo:this.itemInfo,
+          favItems: [],
+          inches:true
 
         }
     },
-    methods: {
-        openModal() {
-            this.modalOpen = !this.modalOpen;
-        },
-        closePopup() {
-          this.modalOpen = false;
-        },
-        close() {
-          this.$emit("input", !this.value);
-        },
-        openMeasureModal() {
-            this.measureModalOpen = !this.measureModalOpen;
-        },
-        closeMeasurePopup() {
-          this.measureModalOpen = false;
-        },
-        openInfoModal() {
-            this.infoModalOpen = !this.infoModalOpen;
-        },
-        closeInfoPopup() {
-          this.infoModalOpen = false;
-        },
-        openNameModal() {
-            this.nameModalOpen = !this.nameModalOpen;
-        },
-        closeNamePopup() {
-          this.nameModalOpen = false;
-        } 
-      } 
+    created() {
+
+      
+      var that = this;
+      var currentUserID = firebase.auth().currentUser.uid;
+      var currentUserName = that.currentUserName;
+      var favItems = that.favItems;
+      
+
+      var db = firebase.firestore();
+      var docRef = db.collection("users").doc(currentUserID);
+
+      docRef.get().then(function(doc) {
+          if (doc.exists) {
+              var favItems = doc.data().favItems;
+              that.favItems = favItems;
+              return favItems;
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch(function(error) {
+          console.log("Error getting document:", error);
+      });
+  },
+    // methods: {
+    //     openModal() {
+    //         this.modalOpen = !this.modalOpen;
+    //     },
+    //     closePopup() {
+    //       this.modalOpen = false;
+    //     },
+    //     close() {
+    //       this.$emit("input", !this.value);
+    //     },
+    //     openMeasureModal() {
+    //         this.measureModalOpen = !this.measureModalOpen;
+    //     },
+    //     closeMeasurePopup() {
+    //       this.measureModalOpen = false;
+    //     },
+    //     openInfoModal() {
+    //         this.infoModalOpen = !this.infoModalOpen;
+    //     },
+    //     closeInfoPopup() {
+    //       this.infoModalOpen = false;
+    //     },
+    //     openNameModal() {
+    //         this.nameModalOpen = !this.nameModalOpen;
+    //     },
+    //     closeNamePopup() {
+    //       this.nameModalOpen = false;
+    //     } 
+    //   } 
 }
 </script>
 
@@ -246,7 +270,7 @@ router-link{
   top:23%;
 }
 .changeItemOverlay{
-  top:43%;
+  top:41%;
   padding:0px 0px;
 }
 .changeMeasurementsOverlay{
@@ -267,5 +291,14 @@ router-link{
 }
 .delete{
   margin-top:20px;
+}
+.color-list{
+  list-style: none;
+  display: inline-block;
+}
+li.color-style{
+  text-transform: capitalize;
+  display:inline;
+  margin-right: 5px;
 }
 </style>

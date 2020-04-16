@@ -62,7 +62,7 @@
               </ul>
       </div>
     </div>
-    <router-link to="/edit-details"><button>Edit Item</button></router-link>
+    <router-link :to="{name: 'edit-details', params: { item: favItemInfo.item, itemInfo: favItemInfo } }"><button>Edit Item</button></router-link>
     <router-link to="/details">Delete Item</router-link>
     <router-link to="/" class="bottomButtonWrapper"><button class="bottomButton">Done</button></router-link>
   </div>
@@ -89,34 +89,7 @@ export default{
         return{
           favItemInfo:this.itemInfo,
           favItems: [],
-          // item:"",
-          // info: {
-          //         Colors: {
-          //           red: "",
-          //           orange: "",
-          //           yellow: "",
-          //           green: "",
-          //           blue: "",
-          //           purple: "",
-          //           pink: "",
-          //           white: "",
-          //           black: "",
-          //           silver: "",
-          //           gold: ""
-          //         },
-          //         Fabric: "",
-          //         Fit: "",
-          //         Store: "",
-          //         Style: ""
-          //       },
-          //       itemMeasurements: {
-          //           Shoulder_Width: this.itemInfo.itemMeasurements.Shoulder_Width,
-          //           Shoulder_Length: 2,
-          //           Chest: 3,
-          //           Bust: 32,
-          //           Waist: 28
-          //       },
-                inches:true
+          inches:true
 
         }
     },

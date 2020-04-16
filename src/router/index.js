@@ -46,12 +46,25 @@ const routes = [
     }
   },
     {
-    path: '/edit-details',
+    path: '/edit-details/:item',
     name: 'edit-details',
+    props:true,
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/Edit-Details.vue'),
+    meta: {
+        requiresAuth: true
+    }
+  },
+      {
+    path: '/edit-details-item/:item',
+    name: 'edit-details-item',
+    props:true,
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/Edit-Details-Item.vue'),
     meta: {
         requiresAuth: true
     }
