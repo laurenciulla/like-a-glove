@@ -23,7 +23,7 @@ const routes = [
     }
   },
   {
-    path: '/details/:item',
+    path: '/details/:index',
     name: 'details',
     props:true,
     // route level code-splitting
@@ -46,7 +46,7 @@ const routes = [
     }
   },
     {
-    path: '/edit-details/:item',
+    path: '/edit-details/:index',
     name: 'edit-details',
     props:true,
     // route level code-splitting
@@ -58,7 +58,7 @@ const routes = [
     }
   },
       {
-    path: '/edit-details-item/:item',
+    path: '/edit-details-item/:index',
     name: 'edit-details-item',
     props:true,
     // route level code-splitting

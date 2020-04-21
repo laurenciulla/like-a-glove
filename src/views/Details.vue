@@ -1,33 +1,23 @@
 <template>
   <div class="about">
     <navBar></navBar>
-    <!-- <nav>
-        <router-link to="/"><img src="@/assets/back.png" class="back"></router-link>
-        <img class="logo" alt="Like a Glove logo" src="@/assets/likeaglovelogo.png">
-        <router-link to="/"><img src="@/assets/logout.png" class="logout"></router-link>
-    </nav> -->
     <div class="top">
         <!-- // <img :src="image" class="favItemPic"> -->
           
-          <h2>{{ item  }}</h2>
+          <h2>{{ index  }}</h2>
+          <!-- <h2>{{ favItems[index].item }}</h2> -->
 
         
     </div>
     <div class="measurements">
         <div class="left">
             <h1>Measurements</h1>
-<!--             <ul>
-              <li  v-for="(value, name) in object" v-bind:key="name">
-                {{ name }}: {{ value }}<span v-if="inches">"</span>
-                <span v-else> cm</span>
-              </li>
-            </ul> -->
-            <ul>
+            <!-- <ul>
               <li  v-for="(value, name) in favItemInfo.itemMeasurements" v-bind:key="name">
                 {{ name }}: {{ value }}<span class="tiny-in" v-if="inches"> in</span>
                 <span v-else> cm</span>
               </li>
-            </ul>
+            </ul> -->
         </div>
         <div class="right">
           
@@ -39,7 +29,7 @@
       <div class="item-Info">
           <h1>Item Info</h1>
           <ul class="info">
-                <li>
+                <!-- <li>
                   Store: {{ favItemInfo.info.Store }}
                 </li>
                 <li>
@@ -51,18 +41,17 @@
                 <li>
                   Colors: <ul  v-for="(value, color) in favItemInfo.info.Colors" v-bind:key="color" class="color-list">
                 <li v-if="value" class="color-style">{{ color }}</li>
-                <!-- <span v-if="color == true">, </span> -->
                     </ul>
                 </li>
                 <li>
                   Fit: <span v-if="favItemInfo.info.Fit <= 33">Loose-Fitting</span>
                       <span v-if="favItemInfo.info.Fit > 33 && favItemInfo.info.Fit < 66">Average</span>
                       <span v-if="favItemInfo.info.Fit >= 66">Form-Fitting</span>
-                </li>
+                </li> -->
               </ul>
       </div>
     </div>
-    <router-link :to="{name: 'edit-details', params: { item: favItemInfo.item, itemInfo: favItemInfo } }"><button>Edit Item</button></router-link>
+    <router-link :to="{name: 'edit-details', params: { index:itemIndex } }"><button>Edit Item</button></router-link>
     <router-link to="/details">Delete Item</router-link>
     <router-link to="/" class="bottomButtonWrapper"><button class="bottomButton">Done</button></router-link>
   </div>
@@ -78,8 +67,10 @@ export default{
     props: {
       msg: String,
       itemInfo:Object,
-      item:String,
-      itemMeasurements:Object
+      //item:String,
+      itemMeasurements:Object,
+      itemIndex:Number,
+      index:Number
     },
     components:{
       favItemMeasurements,
@@ -88,8 +79,10 @@ export default{
     data(){
         return{
           favItemInfo:this.itemInfo,
-          favItems: [],
-          inches:true
+          favItemIndex:this.index,
+          //index:this.index,
+          //favItems: [],
+          //inches:true
 
         }
     },
