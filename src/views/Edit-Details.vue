@@ -3,7 +3,7 @@
     <navBar></navBar>
     <div class="top">
         <!-- // <img :src="image" class="favItemPic"> -->
-        <h2>{{ item }}</h2>
+        <h2>{{ itemTitle }}</h2>
         
     </div>
     <router-link class="changePhotoOverlay editDetailsOverlay" :to="{name: 'edit-details-item', params: { item: favItemInfo.item, itemInfo: favItemInfo } }">
@@ -16,7 +16,7 @@
       <pictureModal v-model="modalOpen"></pictureModal>
     </div> -->
 
-    <router-link class="changeItemOverlay editDetailsOverlay" :to="{name: 'edit-details-item', params: { item: favItemInfo.item, itemInfo: favItemInfo } }">
+    <router-link class="changeItemOverlay editDetailsOverlay" :to="{name: 'edit-details-item', params: { index:itemIndex } }">
         <h4>Change Item Name</h4>
     </router-link>
 
@@ -99,21 +99,23 @@ export default{
     props: {
       msg: String,
       itemInfo:Object,
-      item:String
+      //item:String,
+      itemMeasurements:Object,
+      index:String
     },
-    components: {
-      // pictureModal,
+    components:{
       favItemMeasurements,
-      // measureModal,
-      // infoModal,
-      // itemNameModal,
       navBar
     },
     data(){
         return{
-          favItemInfo:this.itemInfo,
+          favItemInfo:{},
+          favItemIndex:this.index,
+          //index:this.index,
           favItems: [],
-          inches:true
+          inches:true,
+          itemIndex:0,
+          itemTitle:"Sample Title"
 
         }
     },
@@ -124,15 +126,15 @@ export default{
       var currentUserID = firebase.auth().currentUser.uid;
       var currentUserName = that.currentUserName;
       var favItems = that.favItems;
-      
-
       var db = firebase.firestore();
       var docRef = db.collection("users").doc(currentUserID);
-
       docRef.get().then(function(doc) {
           if (doc.exists) {
               var favItems = doc.data().favItems;
               that.favItems = favItems;
+              that.itemIndex = that.index;
+              that.itemTitle = favItems[that.index].item;
+              that.favItemInfo = favItems[that.index];
               return favItems;
           } else {
               // doc.data() will be undefined in this case

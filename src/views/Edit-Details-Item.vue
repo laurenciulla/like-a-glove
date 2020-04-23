@@ -6,7 +6,7 @@
         <form>
           <h2>
             <!-- <label for="Height">Height:</label> -->
-            <input id="item" name="item" type="text" v-model="item" >
+            <input id="item" name="item" type="text" v-model="itemTitle" >
           </h2>
           <div class="overlay">
               <button to="/" class="save" v-on:click="editItemName">Save Info</button>
@@ -88,17 +88,23 @@ export default{
     props: {
       msg: String,
       itemInfo:Object,
-      item:String
+      //item:String,
+      itemMeasurements:Object,
+      index:String
     },
-    components: {
+    components:{
       favItemMeasurements,
       navBar
     },
     data(){
         return{
-          favItemInfo:this.itemInfo,
+          favItemInfo:{},
+          favItemIndex:this.index,
+          //index:this.index,
           favItems: [],
-          inches:true
+          inches:true,
+          itemIndex:0,
+          itemTitle:"Sample Title"
 
         }
     },
@@ -109,15 +115,15 @@ export default{
       var currentUserID = firebase.auth().currentUser.uid;
       var currentUserName = that.currentUserName;
       var favItems = that.favItems;
-      
-
       var db = firebase.firestore();
       var docRef = db.collection("users").doc(currentUserID);
-
       docRef.get().then(function(doc) {
           if (doc.exists) {
               var favItems = doc.data().favItems;
               that.favItems = favItems;
+              that.itemIndex = that.index;
+              that.itemTitle = favItems[that.index].item;
+              that.favItemInfo = favItems[that.index];
               return favItems;
           } else {
               // doc.data() will be undefined in this case
@@ -126,8 +132,6 @@ export default{
       }).catch(function(error) {
           console.log("Error getting document:", error);
       });
-      var itemRef = db.collection("users").doc(currentUserID);
-            console.log(itemRef);
   },
   methods : {
     editItemName: function(e) {
