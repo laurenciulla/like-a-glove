@@ -3,33 +3,27 @@
     <navBar></navBar>
     <div class="top">
         <!-- // <img :src="image" class="favItemPic"> -->
-          
-          <h2>{{ index  }}</h2>
-          <!-- <h2>{{ favItems[index].item }}</h2> -->
-
-        
+          <h2>{{ itemTitle }}</h2>
     </div>
     <div class="measurements">
         <div class="left">
             <h1>Measurements</h1>
-            <!-- <ul>
+            <ul>
               <li  v-for="(value, name) in favItemInfo.itemMeasurements" v-bind:key="name">
                 {{ name }}: {{ value }}<span class="tiny-in" v-if="inches"> in</span>
                 <span v-else> cm</span>
               </li>
-            </ul> -->
+            </ul>
         </div>
         <div class="right">
-          
          <favItemMeasurements v-bind:itemInfo = "favItemInfo"></favItemMeasurements>
-        
         </div>
     </div>
     <div class="itemInfoWrapper">
       <div class="item-Info">
           <h1>Item Info</h1>
           <ul class="info">
-                <!-- <li>
+                <li>
                   Store: {{ favItemInfo.info.Store }}
                 </li>
                 <li>
@@ -47,7 +41,7 @@
                   Fit: <span v-if="favItemInfo.info.Fit <= 33">Loose-Fitting</span>
                       <span v-if="favItemInfo.info.Fit > 33 && favItemInfo.info.Fit < 66">Average</span>
                       <span v-if="favItemInfo.info.Fit >= 66">Form-Fitting</span>
-                </li> -->
+                </li>
               </ul>
       </div>
     </div>
@@ -56,7 +50,6 @@
     <router-link to="/" class="bottomButtonWrapper"><button class="bottomButton">Done</button></router-link>
   </div>
 </template>
-
 <script>
 import favItemMeasurements from '@/components/favItemMeasurements.vue'
 import navBar from '@/components/navBar.vue'
@@ -69,8 +62,7 @@ export default{
       itemInfo:Object,
       //item:String,
       itemMeasurements:Object,
-      itemIndex:Number,
-      index:Number
+      index:String
     },
     components:{
       favItemMeasurements,
@@ -78,30 +70,29 @@ export default{
     },
     data(){
         return{
-          favItemInfo:this.itemInfo,
+          favItemInfo:{},
           favItemIndex:this.index,
           //index:this.index,
-          //favItems: [],
-          //inches:true
-
+          favItems: [],
+          inches:true,
+          itemIndex:0,
+          itemTitle:"Sample Title"
         }
     },
     created() {
-
-      
       var that = this;
       var currentUserID = firebase.auth().currentUser.uid;
       var currentUserName = that.currentUserName;
       var favItems = that.favItems;
-      
-
       var db = firebase.firestore();
       var docRef = db.collection("users").doc(currentUserID);
-
       docRef.get().then(function(doc) {
           if (doc.exists) {
               var favItems = doc.data().favItems;
               that.favItems = favItems;
+              that.itemIndex = that.index;
+              that.itemTitle = favItems[that.index].item;
+              that.favItemInfo = favItems[that.index];
               return favItems;
           } else {
               // doc.data() will be undefined in this case
@@ -113,7 +104,6 @@ export default{
   },
 }
 </script>
-
 <style scoped>
 .about{
     display: flex;
@@ -207,6 +197,4 @@ li.color-style{
   display:inline;
   margin-right: 5px;
 }
-
-
 </style>
