@@ -6,19 +6,20 @@
         <h2>{{ itemTitle }}</h2>
         
     </div>
-    <router-link class="changePhotoOverlay editDetailsOverlay" :to="{name: 'edit-details-item', params: { item: favItemInfo.item, itemInfo: favItemInfo } }">
+    <a class="changePhotoOverlay editDetailsOverlay" v-on:click="notMVP">
         <img src="@/assets/camera.png" class="overlayIcon">
         <h4>Change Photo</h4>
-    </router-link>
+    </a>
     <!-- <pictureModal></pictureModal> -->
 <!--     <div class="modalWidth" v-click-outside="closePopup">
       <button @click="openModal">Open Modal</button>
       <pictureModal v-model="modalOpen"></pictureModal>
     </div> -->
 
-    <router-link class="changeItemOverlay editDetailsOverlay" :to="{name: 'edit-details-item', params: { index:itemIndex } }">
+    <!-- <router-link class="changeItemOverlay editDetailsOverlay" :to="{name: 'edit-details-item', params: { index:itemIndex } }"> -->
+      <a class="changeItemOverlay editDetailsOverlay" v-on:click="notMVP">
         <h4>Change Item Name</h4>
-    </router-link>
+    </a>
 
 <!--     <div class="modalWidth" v-click-outside="closeNamePopup">
       <button @click="openModal">Open Modal</button>
@@ -39,7 +40,7 @@
           <favItemMeasurements v-bind:itemInfo = "favItemInfo"></favItemMeasurements>
         </div>
     </div>
-    <a class="changeMeasurementsOverlay editDetailsOverlay">
+    <a class="changeMeasurementsOverlay editDetailsOverlay" v-on:click="notMVP">
         <img src="@/assets/ruler.png" class="overlayIcon">
         <h4>Re-measure</h4>
     </a>
@@ -72,7 +73,7 @@
               </ul>
       </div>
     </div>
-    <a class="changeInfoOverlay editDetailsOverlay">
+    <a class="changeInfoOverlay editDetailsOverlay" v-on:click="notMVP">
         <img src="@/assets/pencil.png" class="overlayIcon">
         <h4>Edit Info</h4>
     </a>
@@ -80,7 +81,7 @@
       <infoModal v-model="infoModalOpen"></infoModal>
     </div> -->
     <!-- <router-link to="/edit-details"><button>Edit Item</button></router-link> -->
-    <router-link to="/details" class="delete">Delete Item</router-link>
+    <a class="delete" v-on:click="notMVP">Delete Item</a>
     <router-link to="/details" class="bottomButtonWrapper"><button class="bottomButton">Save Item</button></router-link>
   </div>
 </template>
@@ -144,6 +145,11 @@ export default{
           console.log("Error getting document:", error);
       });
   },
+  methods:{
+    notMVP(){
+      alert("Unfortunatley, this feature is not part of the MVP release.")
+    }
+  }
     // methods: {
     //     openModal() {
     //         this.modalOpen = !this.modalOpen;

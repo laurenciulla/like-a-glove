@@ -104,7 +104,8 @@ export default{
           favItems: [],
           inches:true,
           itemIndex:0,
-          itemTitle:"Sample Title"
+          itemTitle:"Sample Title",
+          currentArrayItem:{}
 
         }
     },
@@ -141,15 +142,21 @@ export default{
 
             // identifying current user
             var currentUserID = firebase.auth().currentUser.uid;
-            console.log(currentUserID);
+            // console.log(currentUserID);
 
             // getting user with current user's id
             var docRef = db.collection("users").doc(currentUserID);
+            var currentArrayItem = that.currentArrayItem;
 
             docRef.get().then(function(doc) {
                 if (doc.exists) {
-                    console.log("Document data:", doc.data());
-                    console.log(doc.data().email);
+                    // console.log("Document data:", doc.data());
+                    console.log(doc.data().favItems[that.index]);
+                    var currentArrayItem = doc.data().favItems[that.index];
+
+                    console.log(currentArrayItem)
+                    that.currentArrayItem = currentArrayItem;
+                    return currentArrayItem;
                 } else {
                     // doc.data() will be undefined in this case
                     console.log("No such document!");
@@ -157,12 +164,13 @@ export default{
             }).catch(function(error) {
                 console.log("Error getting document:", error);
             });
+            console.log(currentArrayItem.item);
+            var currentItemIndex = that.index;
+            console.log(currentItemIndex);
 
             //  docRef.update({
-            //   favItems: 
-            //       {
-            //         item: that.item,
-            //       }
+            //   item:"test"
+              
                 
             // })
             // .then(function() {
