@@ -2,10 +2,11 @@
   <div class="edit-details">
     <navBar></navBar>
     <div class="top">
-        <!-- // <img :src="image" class="favItemPic"> -->
-        <h2>{{ itemTitle }}</h2>
+        <img :src="favItemInfo.image" class="favItemPic">
+        
         
     </div>
+    <h2>{{ itemTitle }}</h2>
     <a class="changePhotoOverlay editDetailsOverlay" v-on:click="notMVP">
         <img src="@/assets/camera.png" class="overlayIcon">
         <h4>Change Photo</h4>
@@ -192,6 +193,7 @@ export default{
     display: flex;
     flex-direction: row;
     width: 100%;
+    background-color: white;
 }
 h2{
     background-color: #CDE9FD;
@@ -207,15 +209,23 @@ h2{
     width:100%;
     margin:0;
 }
+.favItemPic{
+    width:100%;
+    margin:0;
+    z-index: -1;
+    /*margin-top:100px;*/
+}
 .top{
-    background-image: url('/assets/scrunchy-top.jpg');
+    /*background-image: url('/assets/scrunchy-top.jpg');*/
     background-repeat: no-repeat;
-    height:300px;
+    max-height:300px;
+    /*height:300px;*/
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start;
     background-size:cover;
     width:100%;
+    /*margin-top:200px;*/
 }
 .itemInfo{
     margin-left: 5%;

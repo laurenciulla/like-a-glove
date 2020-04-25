@@ -39,8 +39,8 @@
       <h1 class="comp">Ideal Pieces</h1>
       <div class="cardContainer">
         <idealCard class="card"></idealCard>
-        <idealCard class="card"></idealCard>
-        <idealCard class="card"></idealCard>
+        <!-- <idealCard class="card"></idealCard> -->
+        <!-- <idealCard class="card"></idealCard> -->
       </div>
     </div>
 
@@ -62,6 +62,7 @@
         v-bind:key="favItem.index"
         v-bind:itemIndex = "index"
         v-bind:itemInfo="favItem"
+        v-bind:bgImage="favItem.image"
         ></favItemCard>
         <newItemCard class="new-card"></newItemCard>
 <!--         <ul v-for="(number, favItem) in favItems" v-bind:key="favItem">
