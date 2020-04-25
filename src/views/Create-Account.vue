@@ -7,7 +7,7 @@
       <form class="loginForm" autocomplete="off">
         <div class="infoFormRow">
           <label for="Email">Email Address</label>
-          <input type="text" name="Email" v-model="email">
+          <input type="text" name="Email" v-model="email" autocomplete="off">
         </div>
         <div class="infoFormRow">
           <label for="Name">Name</label>
