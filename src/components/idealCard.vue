@@ -2,10 +2,12 @@
   <div class="idealCard">
     <div>
       <img :src="image">
-      <h3 v-for="(value, name) in object" v-bind:class="name" v-bind:key ="name">
+      <h3 class="chest">{{ chestAvg }}<span v-if="inches">"</span>
+        <span v-else> cm</span></h3>
+      <!-- <h3 v-for="(value, name) in object" v-bind:class="name" v-bind:key ="name">
         {{ value }}<span v-if="inches">"</span>
         <span v-else> cm</span>
-      </h3>
+      </h3> -->
     </div>
     
     <h2>{{ item }}</h2>
@@ -14,6 +16,8 @@
 </template>
 
 <script>
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 export default {
   name: 'idealCard',
   props: {
@@ -30,9 +34,60 @@ export default {
           bust: 32,
           waist: 28
       },
-      inches:true
+      inches:true,
+      favItems: [],
+      chestAvg: '',
+      currentUserName: '',
     }
-  }
+  },
+  created() {
+      var that = this;
+      var currentUserID = firebase.auth().currentUser.uid;
+      var currentUserName = that.currentUserName;
+      var favItems = that.favItems; 
+      var chestAvg = that.chestAvg;     
+
+      var db = firebase.firestore();
+      var docRef = db.collection("users").doc(currentUserID);
+
+      docRef.get().then(function(doc) {
+          if (doc.exists) {
+            // var currentUserName = doc.data().name;
+            // that.currentUserName = currentUserName;
+              var favItems = doc.data().favItems;
+              that.favItems = favItems;
+              // start chest
+              var chestArray = [];
+              for (var i = favItems.length - 1; i >= 0; i--) {
+                var plsWork = favItems[i];
+
+                var chestArrayLength = chestArray.push(parseFloat(favItems[i].itemMeasurements.Chest));
+              }
+              var chestSum = chestArray.reduce(function(a, b){
+                    return a + b;
+                }, 0);
+              var chestAvg = chestSum/chestArrayLength;
+              console.log(chestAvg);
+              that.chestAvg = chestAvg;
+              // end chest
+              return favItems, chestAvg;
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch(function(error) {
+          console.log("Error getting document:", error);
+      });
+      // console.log(favItems[0]);
+      
+      var shoulderWidthAvg = 0;
+      var shoulderLengthAvg = 0;
+      var bustAvg = 0;
+      var waistAvg = 0;
+      // console.log(shoulderWidthAvg);
+
+
+  },
 }
 </script>
 
@@ -54,7 +109,7 @@ img{
   width:100%;
   padding:0px 20px;
   position: relative;
-  top:180px;
+  top:45px;
 }
 h2{
   font-size:18px;
@@ -77,7 +132,7 @@ h3{
   left:40px;
 }
 .chest{
-  top:-58px;
+  top:-127px;
   left:101px;
 }
 .bust{
