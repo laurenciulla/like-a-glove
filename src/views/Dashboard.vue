@@ -35,7 +35,7 @@
       
     </div>
 
-    <div id="idealPieces">
+    <div id="idealPieces" v-if="favItems[0]">
       <h1 class="comp">Ideal Pieces</h1>
       <div class="cardContainer">
         <idealCard class="card"></idealCard>
