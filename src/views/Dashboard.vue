@@ -39,8 +39,8 @@
       <h1 class="comp">Ideal Pieces</h1>
       <div class="cardContainer">
         <idealCard class="card"></idealCard>
-        <idealCard class="card"></idealCard>
-        <idealCard class="card"></idealCard>
+        <!-- <idealCard class="card"></idealCard> -->
+        <!-- <idealCard class="card"></idealCard> -->
       </div>
     </div>
 

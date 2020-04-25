@@ -150,13 +150,16 @@
         </div>
 
         <h4>Upload a Photo</h4>
-
-        <button @click="openNewPictureModal" class="iconButton"><img src="@/assets/camera.png" class="overlayIconNew"><span class="buttontext">Add Photo</span></button>
-
-        <div class="modalWidth" v-click-outside="closeNewPicturePopup">
-          <!-- <button @click="openModal">Open Modal</button> -->
-          <newPictureModal v-model="newPictureModalOpen" class="enterMeasurementsModal"></newPictureModal>
+        <div class="form-row">
+          <input type="file" @change="uploadImage">
         </div>
+
+        <button class="iconButton"><img src="@/assets/camera.png" class="overlayIconNew"><span class="buttontext">Add Photo</span></button>
+
+<!--         <div class="modalWidth" v-click-outside="closeNewPicturePopup">
+          <button @click="openModal">Open Modal</button>
+          <newPictureModal v-model="newPictureModalOpen" class="enterMeasurementsModal"></newPictureModal>
+        </div> -->
 
         <a class="cancel">Cancel</a>
 
@@ -168,7 +171,7 @@
 </template>
 
 <script>
-import newPictureModal from '@/components/newPictureModal.vue'
+// import newPictureModal from '@/components/newPictureModal.vue'
 // import measureModal from '@/components/measureModal.vue'
 import favItemMeasurements from '@/components/favItemMeasurements.vue'
 import RangeSlider from 'vue-range-slider'
@@ -180,7 +183,7 @@ export default{
     name:'About',
     components:{
       RangeSlider,
-      newPictureModal,
+      //newPictureModal,
       // measureModal,
       navBar,
       favItemMeasurements
@@ -260,12 +263,30 @@ export default{
                 alert("Error writing document: ", error);
             });
            
+          },
+          uploadImage(e){
+            let file = e.target.files[0];
+            var storageRef = firebase.storage().ref('favItemImages/' + file.name);
+            let uploadTask = storageRef.put(file);
+            //console.log(e.target.files[0]);
+            uploadTask.on('state_changed', (snapshot)=>{
+            
+            }, (error) => {
+              // Handle unsuccessful uploads
+            }, () => {
+              // Handle successful uploads on complete
+              // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+              uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=> {
+                this.image = downloadURL;
+                console.log('File available at', downloadURL);
+              });
+            });
           }   
       },
     data(){
         return{
             item: '',
-            image:'./assets/scrunchy-top.jpg',
+            image:'',
             type:'top',
             itemMeasurements: {
               Shoulder_Width: "",
