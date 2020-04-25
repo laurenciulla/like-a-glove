@@ -263,7 +263,7 @@ export default{
                 )
             })
             .then(function() {
-                alert("Your changes have been saved!");
+                // alert("Your changes have been saved!");
                 that.$router.push('/');
 
             })
