@@ -153,6 +153,11 @@
         <div class="form-row">
           <input type="file" @change="uploadImage">
         </div>
+        <div class="form-row">
+          <div>
+            <img :src="image">
+          </div>
+        </div>
 
         <button class="iconButton"><img src="@/assets/camera.png" class="overlayIconNew"><span class="buttontext">Add Photo</span></button>
 
@@ -222,7 +227,7 @@ export default{
               favItems: firebase.firestore.FieldValue.arrayUnion(
                   {
                     item: that.item,
-                    image: './assets/scrunchy-top.jpg',
+                    image: that.image,
                     type: 'top',
                     itemMeasurements: {
                       Shoulder_Width: that.itemMeasurements.Shoulder_Width,
@@ -265,6 +270,7 @@ export default{
            
           },
           uploadImage(e){
+            if(e.target.files[0]){
             let file = e.target.files[0];
             var storageRef = firebase.storage().ref('favItemImages/' + file.name);
             let uploadTask = storageRef.put(file);
@@ -281,6 +287,9 @@ export default{
                 console.log('File available at', downloadURL);
               });
             });
+
+            }
+
           }   
       },
     data(){

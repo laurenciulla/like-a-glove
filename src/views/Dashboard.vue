@@ -62,6 +62,7 @@
         v-bind:key="favItem.index"
         v-bind:itemIndex = "index"
         v-bind:itemInfo="favItem"
+        v-bind:bgImage="favItem.image"
         ></favItemCard>
         <newItemCard class="new-card"></newItemCard>
 <!--         <ul v-for="(number, favItem) in favItems" v-bind:key="favItem">

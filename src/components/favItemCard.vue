@@ -1,13 +1,12 @@
 <template>
   <div class="idealCard">
-    <div class="picture">
-      <!-- <img :src="image"> -->
-      <!-- <router-link to="/details"><button>View Details</button></router-link> -->
-      <!-- <router-link :to="{ name: 'details', params: {item: favItemInfo.item } }"><button>View Details</button></router-link> -->
+    <div class="picture" :style="styles">
+      <!-- <img :src="itemInfo.image" alt="Favorite Item Image" class="imageBackground"> -->
+
+
       <router-link :to="{name: 'details', params: { index:itemIndex } }"><button>View Details</button></router-link>
     </div>
     
-    <!-- <h2>{{ index }}</h2> -->
     <h2>{{ itemInfo.item }}</h2>
   </div>
   
@@ -21,48 +20,20 @@ export default {
   props: {
     msg: String,
     itemInfo:Object,
-    itemIndex:Number
+    itemIndex:Number,
     
   },
   data(){
+
     return {
       //favItems: [],
       //item: this.favItem.item,
-      //image:'./assets/scrunchy-top.jpg',
       favItemInfo:this.itemInfo,
-      
-      //favItemIndex:this.itemIndex,
       index:this.itemIndex,
-      //favItemInfo:this.favItems.index,
+          styles: {
+            'background-image': 'url("' + this.itemInfo.image + '")',
+          }
 
-      //type:'top',
-      // info: {
-      //   Colors: {
-      //     red: "",
-      //     orange: "",
-      //     yellow: "",
-      //     green: "",
-      //     blue: "",
-      //     purple: "",
-      //     pink: "",
-      //     white: "",
-      //     black: "",
-      //     silver: "",
-      //     gold: ""
-      //   },
-      //   Fabric: "",
-      //   Fit: "",
-      //   Store: "",
-      //   Style: ""
-      // },
-      // itemMeasurements: {
-      //     Shoulder_Width: 10,
-      //     Shoulder_Length: 2,
-      //     Chest: 3,
-      //     Bust: 32,
-      //     Waist: 28
-      // },
-      // inches:true
     }
   },
     created() {
@@ -129,7 +100,6 @@ router-link{
   
 }
 .picture{
-  background-image: url('/assets/scrunchy-top.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
