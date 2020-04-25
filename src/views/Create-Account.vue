@@ -92,7 +92,7 @@ export default{
               favItems: []
             })
             .then(function() {
-                alert("Document successfully written!");
+                // alert("Document successfully written!");
                 //that.$router.go({path: that.$router.path});
                  that.$router.push({ name: 'enter-measurements' });
 
