@@ -150,16 +150,19 @@
         </div>
 
         <h4>Upload a Photo</h4>
-        <div class="form-row">
-          <input type="file" @change="uploadImage">
+        <div class="iconButton">
+          <img src="@/assets/camera.png" class="overlayIconNew">
+          <input type="file" @change="uploadImage" class="uploadFilesInput buttontext" value="plswork">
         </div>
+
+        <!-- this displays the image once it's uploaded -->
         <div class="form-row">
-          <div>
+          <div class="imgUpload">
             <img :src="image">
           </div>
         </div>
 
-        <button class="iconButton"><img src="@/assets/camera.png" class="overlayIconNew"><span class="buttontext">Add Photo</span></button>
+<!--         <button class="iconButton"><img src="@/assets/camera.png" class="overlayIconNew"><span class="buttontext">Add Photo</span></button> -->
 
 <!--         <div class="modalWidth" v-click-outside="closeNewPicturePopup">
           <button @click="openModal">Open Modal</button>
@@ -353,6 +356,41 @@ button{
   padding:10px 30px;
   width:100%;
 }
+div.iconButton{
+  background-color: #0494FC;
+  color:#ffffff;
+  font-size: 16px;
+  border:none;
+  border-radius: 5px;
+  padding:15px 30px 0px 30px;
+  margin:30px 0px 0px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /*width: 80%;*/
+}
+.uploadFilesInput{
+  color:transparent;
+    display: flex;
+  width:100%;
+  text-align: center;
+}
+ .uploadFilesInput::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.uploadFilesInput:before{
+  content:"Add Photo";
+  color:white;
+  display: block;
+  text-align: center;
+  margin-top:5px;
+  font-size:16px;
+}
+.uploadFilesInput{
+  display: inline-block;
+}
 h4{
   margin:10px;
   text-align: center;
@@ -375,6 +413,9 @@ a{
 .inches-wrapper span{
   padding-left: 10px;
   padding-bottom:5px;
+}
+.imgUpload{
+  margin-top:10px;
 }
 form.editInfoForm{
   width: 80%;
