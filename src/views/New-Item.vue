@@ -8,7 +8,7 @@
     </nav> -->
     <div class="new-item-wrapper">
       <h4>New Item</h4>
-      <form class="editInfoForm">
+      <form class="editInfoForm" autocomplete="off">
         <div class="infoFormRow">
           <label for="Store">Item Name</label>
           <input type="text" name="itemName" v-model="item">

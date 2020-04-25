@@ -4,7 +4,7 @@
     <div class="wrapper">
       <img src="@/assets/likeaglovelogo.png" class="loginlogo">
       <h4 class="create">Create a New Account</h4>
-      <form class="loginForm">
+      <form class="loginForm" autocomplete="off">
         <div class="infoFormRow">
           <label for="Email">Email Address</label>
           <input type="text" name="Email" v-model="email">
@@ -60,7 +60,7 @@ export default{
                 /* eslint-disable no-debugger, no-console */
           console.log(user);
 
-          alert(`Account created for ${this.email}`);
+          // alert(`Account created for ${this.email}`);
           // this stuff just makes the console work idk
           /* eslint-disable no-debugger, no-console */
           var db = firebase.firestore();
