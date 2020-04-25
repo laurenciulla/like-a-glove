@@ -23,7 +23,7 @@ const routes = [
     }
   },
   {
-    path: '/details/:item',
+    path: '/details/:index',
     name: 'details',
     props:true,
     // route level code-splitting
@@ -46,12 +46,25 @@ const routes = [
     }
   },
     {
-    path: '/edit-details',
+    path: '/edit-details/:index',
     name: 'edit-details',
+    props:true,
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/Edit-Details.vue'),
+    meta: {
+        requiresAuth: true
+    }
+  },
+      {
+    path: '/edit-details-item/:index',
+    name: 'edit-details-item',
+    props:true,
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/Edit-Details-Item.vue'),
     meta: {
         requiresAuth: true
     }

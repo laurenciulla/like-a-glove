@@ -1,27 +1,13 @@
 <template>
   <div class="about">
     <navBar></navBar>
-    <!-- <nav>
-        <router-link to="/"><img src="@/assets/back.png" class="back"></router-link>
-        <img class="logo" alt="Like a Glove logo" src="@/assets/likeaglovelogo.png">
-        <router-link to="/"><img src="@/assets/logout.png" class="logout"></router-link>
-    </nav> -->
     <div class="top">
         <!-- // <img :src="image" class="favItemPic"> -->
-          
-          <h2>{{ item  }}</h2>
-
-        
+          <h2>{{ itemTitle }}</h2>
     </div>
     <div class="measurements">
         <div class="left">
             <h1>Measurements</h1>
-<!--             <ul>
-              <li  v-for="(value, name) in object" v-bind:key="name">
-                {{ name }}: {{ value }}<span v-if="inches">"</span>
-                <span v-else> cm</span>
-              </li>
-            </ul> -->
             <ul>
               <li  v-for="(value, name) in favItemInfo.itemMeasurements" v-bind:key="name">
                 {{ name }}: {{ value }}<span class="tiny-in" v-if="inches"> in</span>
@@ -30,9 +16,7 @@
             </ul>
         </div>
         <div class="right">
-          
          <favItemMeasurements v-bind:itemInfo = "favItemInfo"></favItemMeasurements>
-        
         </div>
     </div>
     <div class="itemInfoWrapper">
@@ -51,7 +35,6 @@
                 <li>
                   Colors: <ul  v-for="(value, color) in favItemInfo.info.Colors" v-bind:key="color" class="color-list">
                 <li v-if="value" class="color-style">{{ color }}</li>
-                <!-- <span v-if="color == true">, </span> -->
                     </ul>
                 </li>
                 <li>
@@ -62,12 +45,11 @@
               </ul>
       </div>
     </div>
-    <router-link to="/edit-details"><button>Edit Item</button></router-link>
+    <router-link :to="{name: 'edit-details', params: { index:itemIndex } }"><button>Edit Item</button></router-link>
     <router-link to="/details">Delete Item</router-link>
     <router-link to="/" class="bottomButtonWrapper"><button class="bottomButton">Done</button></router-link>
   </div>
 </template>
-
 <script>
 import favItemMeasurements from '@/components/favItemMeasurements.vue'
 import navBar from '@/components/navBar.vue'
@@ -78,8 +60,9 @@ export default{
     props: {
       msg: String,
       itemInfo:Object,
-      item:String,
-      itemMeasurements:Object
+      //item:String,
+      itemMeasurements:Object,
+      index:String
     },
     components:{
       favItemMeasurements,
@@ -87,55 +70,29 @@ export default{
     },
     data(){
         return{
-          favItemInfo:this.itemInfo,
+          favItemInfo:{},
+          favItemIndex:this.index,
+          //index:this.index,
           favItems: [],
-          // item:"",
-          // info: {
-          //         Colors: {
-          //           red: "",
-          //           orange: "",
-          //           yellow: "",
-          //           green: "",
-          //           blue: "",
-          //           purple: "",
-          //           pink: "",
-          //           white: "",
-          //           black: "",
-          //           silver: "",
-          //           gold: ""
-          //         },
-          //         Fabric: "",
-          //         Fit: "",
-          //         Store: "",
-          //         Style: ""
-          //       },
-          //       itemMeasurements: {
-          //           Shoulder_Width: this.itemInfo.itemMeasurements.Shoulder_Width,
-          //           Shoulder_Length: 2,
-          //           Chest: 3,
-          //           Bust: 32,
-          //           Waist: 28
-          //       },
-                inches:true
-
+          inches:true,
+          itemIndex:0,
+          itemTitle:"Sample Title"
         }
     },
     created() {
-
-      
       var that = this;
       var currentUserID = firebase.auth().currentUser.uid;
       var currentUserName = that.currentUserName;
       var favItems = that.favItems;
-      
-
       var db = firebase.firestore();
       var docRef = db.collection("users").doc(currentUserID);
-
       docRef.get().then(function(doc) {
           if (doc.exists) {
               var favItems = doc.data().favItems;
               that.favItems = favItems;
+              that.itemIndex = that.index;
+              that.itemTitle = favItems[that.index].item;
+              that.favItemInfo = favItems[that.index];
               return favItems;
           } else {
               // doc.data() will be undefined in this case
@@ -147,7 +104,6 @@ export default{
   },
 }
 </script>
-
 <style scoped>
 .about{
     display: flex;
@@ -241,6 +197,4 @@ li.color-style{
   display:inline;
   margin-right: 5px;
 }
-
-
 </style>

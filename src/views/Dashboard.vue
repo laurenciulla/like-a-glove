@@ -58,9 +58,10 @@
         <!-- <favItemCard class="card"></favItemCard> -->
         <favItemCard
         class="card"
-        v-for="favItem in favItems"
-        v-bind:key="favItem.item"
-        v-bind:itemInfo = "favItem"
+        v-for="(favItem, index) in favItems"
+        v-bind:key="favItem.index"
+        v-bind:itemIndex = "index"
+        v-bind:itemInfo="favItem"
         ></favItemCard>
         <newItemCard class="new-card"></newItemCard>
 <!--         <ul v-for="(number, favItem) in favItems" v-bind:key="favItem">

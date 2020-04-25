@@ -4,10 +4,11 @@
       <!-- <img :src="image"> -->
       <!-- <router-link to="/details"><button>View Details</button></router-link> -->
       <!-- <router-link :to="{ name: 'details', params: {item: favItemInfo.item } }"><button>View Details</button></router-link> -->
-      <router-link :to="{name: 'details', params: { item: favItemInfo.item, itemInfo: favItemInfo } }"><button>View Details</button></router-link>
+      <router-link :to="{name: 'details', params: { index:itemIndex } }"><button>View Details</button></router-link>
     </div>
     
-    <h2>{{ favItemInfo.item }}</h2>
+    <!-- <h2>{{ index }}</h2> -->
+    <h2>{{ itemInfo.item }}</h2>
   </div>
   
 </template>
@@ -19,43 +20,49 @@ export default {
   name: 'favItemCard',
   props: {
     msg: String,
-    itemInfo:Object
+    itemInfo:Object,
+    itemIndex:Number
     
   },
   data(){
     return {
       //favItems: [],
-      //item: "",
+      //item: this.favItem.item,
       //image:'./assets/scrunchy-top.jpg',
-      type:'top',
       favItemInfo:this.itemInfo,
-      info: {
-        Colors: {
-          red: "",
-          orange: "",
-          yellow: "",
-          green: "",
-          blue: "",
-          purple: "",
-          pink: "",
-          white: "",
-          black: "",
-          silver: "",
-          gold: ""
-        },
-        Fabric: "",
-        Fit: "",
-        Store: "",
-        Style: ""
-      },
-      itemMeasurements: {
-          Shoulder_Width: 10,
-          Shoulder_Length: 2,
-          Chest: 3,
-          Bust: 32,
-          Waist: 28
-      },
-      inches:true
+      
+      //favItemIndex:this.itemIndex,
+      index:this.itemIndex,
+      //favItemInfo:this.favItems.index,
+
+      //type:'top',
+      // info: {
+      //   Colors: {
+      //     red: "",
+      //     orange: "",
+      //     yellow: "",
+      //     green: "",
+      //     blue: "",
+      //     purple: "",
+      //     pink: "",
+      //     white: "",
+      //     black: "",
+      //     silver: "",
+      //     gold: ""
+      //   },
+      //   Fabric: "",
+      //   Fit: "",
+      //   Store: "",
+      //   Style: ""
+      // },
+      // itemMeasurements: {
+      //     Shoulder_Width: 10,
+      //     Shoulder_Length: 2,
+      //     Chest: 3,
+      //     Bust: 32,
+      //     Waist: 28
+      // },
+      // inches:true
     }
   },
     created() {
