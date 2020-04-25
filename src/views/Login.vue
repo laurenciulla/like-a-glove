@@ -4,7 +4,7 @@
 
     <div class="wrapper">
       <img src="@/assets/likeaglovelogo.png" class="loginlogo">
-      <form class="loginForm">
+      <form class="loginForm" autocomplete="off">
         <div class="infoFormRow">
           <label for="Email">Email</label>
           <input type="text" name="Email" v-model="email">
@@ -58,7 +58,7 @@ export default{
         // console.log("register");
         firebase.auth().signInWithEmailAndPassword(this.email, this.password)
         .then(user => {
-          alert(`You are logged in as ${user.email}`);
+          // alert(`You are logged in as ${user.email}`);
           this.$router.go({path: this.$router.path});
         },
         err => {
