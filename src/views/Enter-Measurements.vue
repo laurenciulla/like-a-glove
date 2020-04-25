@@ -6,12 +6,18 @@
     </nav> -->
     <div id="measurements">
       <div class="left">
-        <profileCard></profileCard>
+              <img :src="profilePic" class="previewPic" v-if="profilePic">
+                <div class="iconButton-p" v-if="!profilePic">
+                  <img src="@/assets/camera.png" class="overlayIcon-p">
+                  <input type="file" @change="uploadImage" class="uploadFilesInput-p">
+                </div>
+                
+        <!-- <profileCard></profileCard> -->
         <div class="editDiv">
           <h1 class="measurements-active">Enter Measurements</h1>
         </div>
 
-        <form action="/">
+        <form action="/" autocomplete="off">
           <div class="form-row">
             <label for="Height">Height:</label>
             <input id="Height" name="Height" type="text" v-model="measurements.Height" >
@@ -48,30 +54,30 @@
             <!-- change value to a variable of the user's current value -->
           </div>
 
-          <div class="switch-wrapper">
+<!--           <div class="switch-wrapper">
             <div class="switch-row">
-              <label for="Gender">Gender:</label>
+              <label for="Gender">Gender:</label> -->
               <!-- toggle -->
-              <div class="can-toggle demo-rebrand-1">
+  <!--             <div class="can-toggle demo-rebrand-1">
                 <input id="Gender" type="checkbox">
                 <label for="Gender">
                   <div class="can-toggle__switch" data-checked="Male" data-unchecked="Female"></div>
                 </label>
-              </div>
+              </div> -->
               <!-- end toggle -->
-            </div>
+<!--             </div>
             <div class="switch-row">
-              <label for="Units" class="right-toggle-label">Units:</label>
+              <label for="Units" class="right-toggle-label">Units:</label> -->
               <!-- toggle -->
-              <div class="can-toggle demo-rebrand-1 right-toggle">
+   <!--            <div class="can-toggle demo-rebrand-1 right-toggle">
                 <input id="Units" type="checkbox">
                 <label for="Units">
                   <div class="can-toggle__switch" data-checked="CM" data-unchecked="IN"></div>
                 </label>
-              </div>
+              </div> -->
               <!-- end toggle -->
-            </div>
-          </div>
+<!--             </div>
+          </div> -->
 
           <div class="overlay">
               <button to="/" class="save" v-on:click="editMeasurementValue">Save Info</button>
@@ -86,18 +92,18 @@
     </div>
 
     <div id="idealPieces">
-      <h1 class="comp">Ideal Pieces</h1>
+      <!-- <h1 class="comp">Ideal Pieces</h1> -->
       <div class="cardContainer">
+<!--         <idealCard class="card"></idealCard>
         <idealCard class="card"></idealCard>
-        <idealCard class="card"></idealCard>
-        <idealCard class="card"></idealCard>
+        <idealCard class="card"></idealCard> -->
       </div>
     </div>
 
     <div id="favItems">
-      <h1>Your Favorite Items</h1>
+      <!-- <h1>Your Favorite Items</h1> -->
       <div class="cardContainer">
-        <favItemCard class="card"></favItemCard>
+        <!-- <favItemCard class="card"></favItemCard> -->
       </div>
     </div>
 
@@ -115,10 +121,10 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import profileCard from '@/components/profileCard.vue'
-import idealCard from '@/components/idealCard.vue'
+//import profileCard from '@/components/profileCard.vue'
+//import idealCard from '@/components/idealCard.vue'
 import bodyGuide from '@/components/bodyGuide.vue'
-import favItemCard from '@/components/favItemCard.vue'
+// import favItemCard from '@/components/favItemCard.vue'
 import navBar from '@/components/navBar.vue'
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -126,10 +132,10 @@ export default {
   name: 'Home',
   components: {
     // HelloWorld
-    profileCard,
-    idealCard,
+    //profileCard,
+    //idealCard,
     bodyGuide,
-    favItemCard,
+    // favItemCard,
     navBar
   },
 data(){
@@ -145,6 +151,7 @@ data(){
       active: false,
       value: null,
       allUsers: [],
+      profilePic: '',
     }
   },
 created() {
@@ -190,7 +197,8 @@ created() {
                   LegLength: that.measurements.LegLength
                 },
               inches: true,
-              gender: true
+              gender: true,
+              profilePic: that.profilePic
             })
             .then(function() {
                 alert("Your changes have been saved!");
@@ -201,7 +209,30 @@ created() {
                 alert("Error writing document: ", error);
             });
       e.preventDefault();
-    }
+    },
+          uploadImage(e){
+            if(e.target.files[0]){
+            let file = e.target.files[0];
+            var storageRef = firebase.storage().ref('profileImages/' + file.name);
+            let uploadTask = storageRef.put(file);
+            //console.log(e.target.files[0]);
+            uploadTask.on('state_changed', (snapshot)=>{
+            
+            }, (error) => {
+              // Handle unsuccessful uploads
+            }, () => {
+              // Handle successful uploads on complete
+              // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+              uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=> {
+                this.profilePic = downloadURL;
+                console.log('File available at', downloadURL);
+              });
+            });
+
+            }
+
+          } 
+
   },
 
   //  mounted: function () {
@@ -231,7 +262,7 @@ button.save{
 .overlay{
   background-color: rgba(205,233,253,.66);
   width:100vw;
-  height:50%;
+  height:40%;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -428,4 +459,55 @@ textarea:focus, input:focus, select:focus{
   color: #0494FC;
 }
 
+
+
+.iconButton-p{
+  padding:10px 30px;
+  width:90%;
+}
+div.iconButton-p{
+  background-color: #0494FC;
+  color:#ffffff;
+  font-size: 16px;
+  border:none;
+  border-radius: 5px;
+  padding:10px 20px 0px 20px;
+  margin:0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /*width: 80%;*/
+}
+.uploadFilesInput-p{
+  color:transparent;
+    display: flex;
+  width:100%;
+  text-align: center;
+}
+ .uploadFilesInput-p::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.uploadFilesInput-p:before{
+  content:"Add Profile Photo";
+  color:white;
+  display: block;
+  text-align: center;
+  margin-top:5px;
+  font-size:15px;
+}
+.uploadFilesInput-p{
+  display: inline-block;
+  height:35px;
+}
+.overlayIcon-p{
+  width: 30px;
+  /*display: block;*/
+}
+.previewPic{
+  width:45%;
+  margin-bottom: 10px;
+  /*max-height:100px;*/
+}
 </style>

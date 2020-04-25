@@ -1,7 +1,7 @@
 <template>
   <div class="profileCard">
     <div class="imageHolder">
-      <img v-bind:src="image">
+      <img v-bind:src="currentUserProfilePic">
     </div>
     <h2>{{ currentUserName }}</h2>
   </div>
@@ -19,7 +19,8 @@ export default {
   data(){
     return {
       image:'./assets/profile-photo.jpg',
-      currentUserName: ''
+      currentUserName: '',
+      currentUserProfilePic: ''
     }
   },
   created() {
@@ -27,6 +28,7 @@ export default {
       var that = this;
       var currentUserID = firebase.auth().currentUser.uid;
       var currentUserName = that.currentUserName;
+      var currentUserProfilePic = that.currentUserProfilePic;
       
 
       var db = firebase.firestore();
@@ -38,7 +40,9 @@ export default {
               // console.log(doc.data().name);
               var currentUserName = doc.data().name;
               that.currentUserName = currentUserName;
-              return currentUserName;
+              var currentUserProfilePic = doc.data().profilePic;
+              that.currentUserProfilePic = currentUserProfilePic;
+              return currentUserName, currentUserProfilePic;
           } else {
               // doc.data() will be undefined in this case
               console.log("No such document!");

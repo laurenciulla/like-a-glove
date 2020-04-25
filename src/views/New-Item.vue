@@ -152,7 +152,7 @@
         <h4>Upload a Photo</h4>
         <div class="iconButton">
           <img src="@/assets/camera.png" class="overlayIconNew">
-          <input type="file" @change="uploadImage" class="uploadFilesInput buttontext" value="plswork">
+          <input type="file" @change="uploadImage" class="uploadFilesInput buttontext">
         </div>
 
         <!-- this displays the image once it's uploaded -->

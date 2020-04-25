@@ -220,11 +220,11 @@ h3{
 }
 .shoulderWidth{
   top:-191px;
-  left: -7px;
+  left: 7px;
 }
 .shoulderLength{
   top:-197px;
-  left:-73px;
+  left:-68px;
 }
 .chest{
   top:-160px;
@@ -232,11 +232,11 @@ h3{
 }
 .bust{
   top:-145px;
-  left:32px;
+  left:42px;
 }
 .waist{
   top:-110px;
-  left:7px;
+  left:25px;
 }
 ul {
   list-style-type: none;
