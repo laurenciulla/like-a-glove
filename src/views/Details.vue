@@ -1,10 +1,12 @@
 <template>
   <div class="about">
     <navBar></navBar>
+    <!-- <div class="top" :style="styles"> -->
     <div class="top">
-        <!-- // <img :src="image" class="favItemPic"> -->
-          <h2>{{ itemTitle }}</h2>
+         <img :src="favItemInfo.image" class="favItemPic">
+          
     </div>
+    <h2>{{ itemTitle }}</h2>
     <div class="measurements">
         <div class="left">
             <h1>Measurements</h1>
@@ -62,7 +64,8 @@ export default{
       itemInfo:Object,
       //item:String,
       itemMeasurements:Object,
-      index:String
+      index:String,
+      image:String
     },
     components:{
       favItemMeasurements,
@@ -71,12 +74,17 @@ export default{
     data(){
         return{
           favItemInfo:{},
+
           favItemIndex:this.index,
           //index:this.index,
           favItems: [],
           inches:true,
           itemIndex:0,
-          itemTitle:"Sample Title"
+          itemTitle:"Sample Title",
+          itemImgSrc: this.image,
+          styles: {
+            // 'background-image': 'url("' + itemImgSrc + '")',
+          },
         }
     },
     created() {
@@ -92,6 +100,7 @@ export default{
               that.favItems = favItems;
               that.itemIndex = that.index;
               that.itemTitle = favItems[that.index].item;
+              // that.itemImgSrc = favItems[that.index].image;
               that.favItemInfo = favItems[that.index];
               return favItems;
           } else {
@@ -114,6 +123,7 @@ export default{
     display: flex;
     flex-direction: row;
     width: 100%;
+    background-color: white;
 }
 .tiny-in{
   font-size: 16px;
@@ -131,16 +141,20 @@ h2{
 .favItemPic{
     width:100%;
     margin:0;
+    z-index: -1;
+    /*margin-top:100px;*/
 }
 .top{
-    background-image: url('/assets/scrunchy-top.jpg');
+    /*background-image: url('/assets/scrunchy-top.jpg');*/
     background-repeat: no-repeat;
-    height:300px;
+    max-height:300px;
+    /*height:300px;*/
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start;
     background-size:cover;
     width:100%;
+    /*margin-top:200px;*/
 }
 .item-Info{
     margin-left: 5%;
